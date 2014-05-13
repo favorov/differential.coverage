@@ -1,0 +1,2 @@
+export('CountCoverageOfNoodles')
+import('IRanges','GenomicRanges','methods')

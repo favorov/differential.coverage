@@ -1,0 +1,2 @@
+CountCoverageOfNoodles<-function(noodles,bedfilnames){
+}
