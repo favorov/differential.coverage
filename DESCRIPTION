@@ -13,7 +13,6 @@ Description: Differential coverage: coverage : bed file collection from MACS and
 License: Artistic-2.0
 LazyLoad: yes
 Depends: R (>= 3.0.1) IRanges, GenomicRanges, methods
-Imports: grDevices, gplots
 biocViews: Annotation, Genetics, Infrastructure, DataRepresentation,
         Bioinformatics
 URL: https://github.com/favorov/differential-coverage
