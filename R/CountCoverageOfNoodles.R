@@ -1,5 +1,5 @@
 #Differential.Coverage library
-#$Id$
+#A. Favorov, S. Wheelan 2014
 
 CountCoverageOfNoodles<-function(noodles,bedfilnames,bed.ids=bedfilnames){
 	if (length(bedfilnames)!=length(bed.ids))
