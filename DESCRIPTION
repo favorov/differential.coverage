@@ -12,7 +12,7 @@ Maintainer: Alexander Favorov <favorov@sensi.org>
 Description: Differential coverage: coverage : bed file collection from MACS and we want to know which intervals are deferentially covered. 
 License: Artistic-2.0
 LazyLoad: yes
-Depends: R (>= 3.1.0), IRanges, GenomicRanges, Homo.Sapiens, org.Hs.eg.db
+Depends: R (>= 3.1.0), IRanges, GenomicRanges, Homo.sapiens, org.Hs.eg.db
 biocViews: Annotation, Genetics, Infrastructure, DataRepresentation,
         Bioinformatics
 URL: https://github.com/favorov/differential-coverage
