@@ -1,2 +1,2 @@
 export('CountCoverageOfNoodles')
-import('IRanges','GenomicRanges','methods')
+import('IRanges','GenomicRanges','Homo.Sapiens','org.Hs.eg.db')
