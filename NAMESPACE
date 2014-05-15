@@ -1,2 +1,2 @@
-export('CountCoverageOfNoodles','chromosomes.hg19')
+export('CountCoverageOfNoodles','nucl.chromosomes.hg19')
 import('IRanges','GenomicRanges','Homo.sapiens','org.Hs.eg.db')
