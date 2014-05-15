@@ -1,5 +1,5 @@
 #Differential.Coverage library
-#$Id:
+#$Id:$
 
 CountCoverageOfNoodles<-function(noodles,bedfilnames,bed.ids=bedfilnames){
 	if (length(bedfilnames)!=length(bed.ids))
