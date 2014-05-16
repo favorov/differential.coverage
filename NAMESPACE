@@ -1,2 +1,2 @@
 export('CountCoverageOfNoodles','nucl.chromosomes.hg19','prepare.uniform.noodles')
-import('IRanges','GenomicRanges','Homo.sapiens','org.Hs.eg.db')
+import('IRanges','GenomicRanges','rtracklayer','DASiR','Homo.sapiens','org.Hs.eg.db')
