@@ -5,7 +5,7 @@
 #returns noodles that uniformly cover
 #the set of chromosomes that are described by 
 #sequinfo
-prepare.uniform.noodle<-function(seq.info)
+prepare.uniform.noodles<-function(seq.info)
 {
 	print('nooooddlee')
 }
