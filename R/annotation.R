@@ -9,3 +9,9 @@ nucl.chromosomes.hg19<-function()
 	#only chrNN, chrX and chrY.
 	#chrM is 25
 }
+
+list.of.overlapped.genes<-function(
+	the.ranges, #GenomicRnges
+	flanks #integer
+{
+}
