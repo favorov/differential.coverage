@@ -1,5 +1,5 @@
 #Differential.Coverage library
-#A. Favorov, S. Wheelan 2014
+#A. Favorov, E. Fertig, S. Wheelan 2014
 #prepare noodles
 
 #returns noodles that uniformly cover

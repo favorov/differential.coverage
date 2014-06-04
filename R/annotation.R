@@ -1,5 +1,5 @@
 #Differential.Coverage library
-#A. Favorov, S. Wheelan 2014
+#A. Favorov, E. Fertig, S. Wheelan 2014
 #annotation utilities
 
 nucl.chromosomes.hg19<-function()
@@ -10,8 +10,3 @@ nucl.chromosomes.hg19<-function()
 	#chrM is 25
 }
 
-list.of.overlapped.genes<-function(
-	the.ranges, #GenomicRnges
-	flanks #integer
-{
-}
