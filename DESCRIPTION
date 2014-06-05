@@ -1,7 +1,7 @@
 Package: Differential.Coverage
 Type: Package
 Title: Differential Coverage package
-Version: 0.0.1
+Version: 0.0.2
 Date: 2014-05-11
 Author@R: c( person("Alexander", "Favorov",email =
         "favorov@sensi.org"), 
