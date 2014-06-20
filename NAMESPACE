@@ -1,2 +1,2 @@
-export('CountCoverageOfNoodles','nucl.chromosomes.hg19','prepare.uniform.noodles','gene.list.by.overlap')
+export('CountCoverageOfNoodles','nucl.chromosomes.hg19','prepare.uniform.noodles','gene.list.by.overlap','prepare.tabulated.fisher')
 import('IRanges','GenomicRanges','rtracklayer','DASiR','Homo.sapiens','org.Hs.eg.db')

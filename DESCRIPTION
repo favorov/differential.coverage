@@ -1,13 +1,13 @@
 Package: Differential.Coverage
 Type: Package
 Title: Differential Coverage package
-Version: 0.0.2
-Date: 2014-05-11
-Author@R: c( person("Alexander", "Favorov",email =
-        "favorov@sensi.org"), 
-		person("Sarah","J.","Wheelan")
-        )
-Author: Alexander Favorov, Sarah J. Wheelan
+Version: 0.0.3
+Date: 2014-06-19
+Author@R: c( person("Alexander", "Favorov",email = "favorov@sensi.org"),
+		person("Elana","J.","Fertig", email="ejfertig@jhmi.edu")
+		person("Sarah","J.","Wheelan",email = "swheelan@jhmi.edu"),
+)
+Author: Alexander Favorov, Elana J. Fertig, Sarah J. Wheelan
 Maintainer: Alexander Favorov <favorov@sensi.org>
 Description: Differential coverage: coverage : bed file collection from MACS and we want to know which intervals are deferentially covered. 
 License: Artistic-2.0

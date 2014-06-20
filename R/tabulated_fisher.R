@@ -13,3 +13,8 @@
 #MY-MY N-MN
 #MY is methylated-positive  and MN is methylated-negative
 #rownumber = (N-1) MY + MN (standard 2-D transform)
+
+prepare.tabulated.fisher(Y,N)
+{
+	Rda.name<-paste0('tabulated.fisher.',Y,'.',N,'.Rda')
+}
