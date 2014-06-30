@@ -1,4 +1,8 @@
 We start it as a package just to easy install to R.
 
 0.1 - initial version, nothing works yet
-0.2 - we can prepare uniform interval and calcutate the coverage for them
+0.2 - we can: 
+	prepare uniform intervals (noodles)
+	calcutate the coverage for intervals & list of bed files
+	generate a list of genes that are around (+-flanks) ranges from GRanges
+0.3 - tabulated fisher added
