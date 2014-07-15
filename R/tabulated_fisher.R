@@ -48,12 +48,16 @@ prepare.tabulated.fisher<-function(Y,N,folder='.',load=TRUE,save=TRUE)
 	tabulated.fisher<-data.frame('fisher.p.values'=numeric(different.tests.number),'meth.in.normals.ratio'=numeric(different.tests.number),'meth.in.tumors.ratio'=numeric(different.tests.number),
 		'OR'=numeric(different.tests.number),'CI_95_L'=numeric(different.tests.number),'CI_95_H'=numeric(different.tests.number))
 
+	#again: Y=#of positive (tumors)
+	#N=#of negative 
+	#MY MN
+	#Y-MY N-MN
 	for (MY in 0:Y)
 		for (MN in 0:N)
 		{
-			cotable<-matrix(c(MY,MN,Y-MY,N-MN),ncol=2)
+			cotable<-matrix(c(MY,MN,Y-MY,N-MN),ncol=2,byrow=TRUE)
 			fisherres<-fisher.test(cotable)
-			tabulated.fisher[tab.fisher.row.no(Y,N,MY,MN),]<-c(fisherres$p.value,cotable[2,2]/cotable[1,2],cotable[2,1]/cotable[1,1],fisherres$estimate,fisherres$conf.int[1],fisherres$conf.int[2])
+			tabulated.fisher[tab.fisher.row.no(Y,N,MY,MN),]<-c(fisherres$p.value,cotable[1,2]/N,cotable[1,1]/Y,fisherres$estimate,fisherres$conf.int[1],fisherres$conf.int[2])
 		}	
 	#print(dim(tabulated.fisher))
 	message('saving fisher tabulation')
