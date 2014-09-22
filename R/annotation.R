@@ -21,7 +21,8 @@ gene.list.by.overlap<-function(
 {
 	expanded.noodles<-noodles
 	#inflate DM noodles
-	start(expanded.noodles)<-pmax(0,start(noodles)-flanks)
+	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
+	#print(min(start(expanded.noodles)))
 	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
 	#prepare gene TSS
 	genelist<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
@@ -73,14 +74,19 @@ gene.list.by.overlap<-function(
 	if ('p.value' %in% names(elementMetadata(noodles)))
 	{
 		p.value<- tapply(noodles[queryHits(overlaps)]$p.value,subjectHits(overlaps),min)
-		#print(p.value)
+		# print(p.value)
 		DM.Genes$p.value<-p.value[as.character(DM.Gene.Indices)] 
 		# we make the addressin because tapply return keys sorted, nothin to do with original order
 	}
 
 	message('mapped')
-
+	#print(min(start(DM.Genes)))
 	DM.Genes
+	#vetcor<<-pmax(start(DM.CpGIs.GRanges)-flanks,1)
+	#print(min(vetcor))
+	#print('########')
+	#print(min(start(DM.Genes)))
+	#start(DM.CpGIs.GRanges)<-vetcor
 }
 
 
@@ -145,6 +151,8 @@ gene.list.by.ovelapping.intervals<-function(
 
 	message('mapped')
 
+	#print(min(start(DM.Genes)))
+	
 	DM.Genes
 }
 
