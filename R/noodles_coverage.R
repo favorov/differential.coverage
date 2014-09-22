@@ -1,4 +1,4 @@
-#Differential.Coverage library
+#differential.coverage library
 #A. Favorov, E. Fertig, S. Wheelan 2014
 
 CountCoverageOfNoodles<-function(noodles,bedfilnames,bed.ids=bedfilnames){
