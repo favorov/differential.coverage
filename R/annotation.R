@@ -11,23 +11,28 @@ nucl.chromosomes.hg19<-function()
 }
 
 
-#we get a list of intervals with p-values and ishyper
-#we inflate them
-#we make an overall list of genes
-gene.list.by.overlap<-function(
-	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, thay will be mapped to genes
+#we get a list of intervals (noodles)
+#we inflate them by flanks
+#we make an list of genes with TSS inside any inteval
+#if the intervals have p.value, fdr or ishyper values,
+#they will bw mapped to gene
+genes.by.TSS.overlap<-function(
+	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
 	flanks=0 #how far to shrink 
 )
 {
 	expanded.noodles<-noodles
 	#inflate DM noodles
 	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
-	#print(min(start(expanded.noodles)))
 	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
+	#inflated
+
 	#prepare gene TSS
 	genelist<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
+	#initialise the list to subset later
 
 	TSS<- genelist
+	#this copy is for overlaps
 
 	geneSymbols <- select(
 		org.Hs.eg.db,
@@ -42,19 +47,22 @@ gene.list.by.overlap<-function(
 
 	start(TSS)<-tss.start
 	end(TSS)<-tss.start
+	#TSS prepared
 
 	#make overlap
 	overlaps<-findOverlaps(expanded.noodles,TSS)
 	message('overlapped')
 
-	DM.Gene.Indices<-unique(subjectHits(overlaps))
+	noodle.TSS.Gene.Indices<-unique(subjectHits(overlaps))
+	#indices of all the genes tha were hit by any noodle
+	#maybe, some of them are hit with more than one
 
-	DM.Genes<-genelist[DM.Gene.Indices]
+	noodle.TSS.Genes<-genelist[noodle.TSS.Gene.Indices]
+	
 
-	DM.Genes$SYMBOL<-TSS$SYMBOL[DM.Gene.Indices]
+	noodle.TSS.Genes$SYMBOL<-TSS$SYMBOL[noodle.TSS.Gene.Indices]
 
-	#print(DM.Gene.Indices)
-
+	
 	if ('ishyper' %in% names(elementMetadata(noodles)))
 	{
 		ishyper<- tapply(noodles[queryHits(overlaps)]$ishyper,subjectHits(overlaps),
@@ -66,34 +74,45 @@ gene.list.by.overlap<-function(
 				else NA
 			}
 		)
-		#print(ishyper)
-		DM.Genes$ishyper<-ishyper[as.character(DM.Gene.Indices)]
+		print(ishyper)
+		#DM.Genes$ishyper<-ishyper[as.character(noodle.TSS.Gene.Indices)]
+		noodle.TSS.Genes$ishyper<-ishyper[noodle.TSS.Gene.Indices]
 		# we make the addressin because tapply return keys sorted, nothin to do with original order
 	}
 
 	if ('p.value' %in% names(elementMetadata(noodles)))
 	{
-		p.value<- tapply(noodles[queryHits(overlaps)]$p.value,subjectHits(overlaps),min)
+		p.value<-tapply(noodles[queryHits(overlaps)]$p.value,subjectHits(overlaps),min)
 		# print(p.value)
-		DM.Genes$p.value<-p.value[as.character(DM.Gene.Indices)] 
+		noodle.TSS.Genes$p.value<-p.value[as.character(DM.Gene.Indices)] 
+		# we make the addressin because tapply return keys sorted, nothin to do with original order
+	}
+
+	if ('fdr' %in% names(elementMetadata(noodles)))
+	{
+		fdr<-tapply(noodles[queryHits(overlaps)]$fdr,subjectHits(overlaps),min)
+		# print(p.value)
+		noodle.TSS.Genes$fdr<-fdr[as.character(DM.Gene.Indices)] 
+		# we make the addressin because tapply return keys sorted, nothin to do with original order
+	}
+	
+	if ('FDR' %in% names(elementMetadata(noodles)))
+	{
+		FDR<-tapply(noodles[queryHits(overlaps)]$FDR,subjectHits(overlaps),min)
+		# print(p.value)
+		noodle.TSS.Genes$FDR<-FDR[as.character(DM.Gene.Indices)] 
 		# we make the addressin because tapply return keys sorted, nothin to do with original order
 	}
 
 	message('mapped')
-	#print(min(start(DM.Genes)))
-	DM.Genes
-	#vetcor<<-pmax(start(DM.CpGIs.GRanges)-flanks,1)
-	#print(min(vetcor))
-	#print('########')
-	#print(min(start(DM.Genes)))
-	#start(DM.CpGIs.GRanges)<-vetcor
+	noodle.TSS.Genes
 }
 
 
 
-#we get a list of intervals 
-#we inflate them
-#we make a list of genes with overlapping TSS for each of them
+#we get a list of intervals (noodles)
+#we inflate them by flanks
+#we make a list of genes with TSS inside the inflated noodle for each of the noodles
 
 gene.list.by.ovelapping.intervals<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
@@ -122,11 +141,11 @@ gene.list.by.ovelapping.intervals<-function(
 
 	start(TSS)<-tss.start
 	end(TSS)<-tss.start
-
+	#IAMHERE
 	#make overlap
 	overlaps<-findOverlaps(expanded.noodles,TSS)
 	message('overlapped')
-#I am here
+	
 	DM.CpGIs.GRanges<-as(DM.CpGIs.Ranges,'GRanges') # the same tester again
 
 	end(DM.CpGIs.GRanges)<-pmin(end(DM.CpGIs.GRanges)+flanks,seqlengths(TSS)[as.character(seqnames(DM.CpGIs.GRanges))])
