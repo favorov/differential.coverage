@@ -2,20 +2,32 @@
 #A. Favorov, E. Fertig, S. Wheelan 2014
 #annotation utilities
 
-nucl.chromosomes.hg19<-function()
+#'nucl.chromosomes.hg19
+#'
+#'Returns the choromosome lengths for hg19
+#'
+#'Returns the choromosome lengths for hg19 as a \code{seqinfo} object.
+#'@param chrM boolean: if FALSE (default), returns info only for chr 1..22, X and Y. If TRUE, 1..22, X, Y and M
+#'@return \code{seqinfo} object with the chromosome desriptions
+#'@seealso seqinfo
+nucl.chromosomes.hg19<-function(chrM=FALSE)
 {
 	chr.all<-seqinfo(TxDb.Hsapiens.UCSC.hg19.knownGene)
-	chr.all[names(chr.all)[1:24]]
-	#only chrNN, chrX and chrY.
-	#chrM is 25
+	if (chrM)
+		chr.all[names(chr.all)[1:25]]
+	else
+		chr.all[names(chr.all)[1:24]]
 }
 
 
-#we get a list of intervals (noodles)
-#we inflate them by flanks
-#we make an list of genes with TSS inside any inteval
-#if the intervals have p.value, fdr or ishyper values,
-#they will bw mapped to gene
+#'genes.by.TSS.overlap
+#'
+#'Generates list of genes that start inside a given set of intervals
+#'
+#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
+#'@param noodles the list of intervals to look TSS in
+#'@param flanks lenght to inflate the noddles by before the search
+#'@return \code{GRanges} object that is the list of the genes we look for
 genes.by.TSS.overlap<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
 	flanks=0 #how far to shrink 
@@ -110,18 +122,23 @@ genes.by.TSS.overlap<-function(
 
 
 
-#we get a list of intervals (noodles)
-#we inflate them by flanks
-#we make a list of genes with TSS inside the inflated noodle for each of the noodles
 
-gene.list.by.ovelapping.intervals<-function(
+#'gene.list.for.ovelapping.intervals
+#'
+#'Generates list of genes that start inside a given set of intervals
+#'
+#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. 
+#'If a noodle has any overlapping genes, we form a text list of the genes.
+#'@inheritParams genes.by.TSS.overlap
+#'@return \code{GRanges} object, noodles argument with added genes for each interval  
+gene.list.for.ovelapping.intervals<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	flanks=0 #how far to shrink 
 )
 {
 	expanded.noodles<-noodles
 	#inflate DM noodles
-	start(expanded.noodles)<-pmax(0,start(noodles)-flanks)
+	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
 	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
 	#prepare gene TSS
 	genelist<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
@@ -143,36 +160,29 @@ gene.list.by.ovelapping.intervals<-function(
 	end(TSS)<-tss.start
 	#IAMHERE
 	#make overlap
-	overlaps<-findOverlaps(expanded.noodles,TSS)
+	overlapa<-findOverlaps(expanded.noodles,TSS)
 	message('overlapped')
 	
-	DM.CpGIs.GRanges<-as(DM.CpGIs.Ranges,'GRanges') # the same tester again
-
-	end(DM.CpGIs.GRanges)<-pmin(end(DM.CpGIs.GRanges)+flanks,seqlengths(TSS)[as.character(seqnames(DM.CpGIs.GRanges))])
-
-	start(DM.CpGIs.GRanges)<-pmax(start(DM.CpGIs.GRanges)-flanks,1)
-
-	overla<-findOverlaps(DM.CpGIs.GRanges,TSS)
+	decorated.nooles<-noodles
 
 	#overlapped.TSS
 
-	overlapped.TSS<-tapply(TSS$SYMBOL[subjectHits(overla)],queryHits(overla),paste,collapse=', ')
+	overlapped.TSS<-tapply(TSS$SYMBOL[subjectHits(overla)],queryHits(overlapa),paste,collapse=', ')
 
-	DM.CpGIs.stat<-cbind(DM.CpGIs.stat,'overlapped.TSS'=overlapped.TSS[as.character(1:length(DM.CpGIs.GRanges))])
+	decorated.noodles<-cbind(decorated.noodles,'overlapped.TSS'=overlapped.TSS[as.character(1:length(decorated.noodles))])
 
-	overlapped.pos<-tapply(as.character(start(TSS))[subjectHits(overla)],queryHits(overla),paste,collapse=', ')
+	overlapped.pos<-tapply(as.character(start(TSS))[subjectHits(overla)],queryHits(overlapa),paste,collapse=', ')
 
-	DM.CpGIs.stat<-cbind(DM.CpGIs.stat,'overlapped.pos'=overlapped.pos[as.character(1:length(DM.CpGIs.GRanges))])
+	decorated.noodles<-cbind(decorated.noodles,'overlapped.pos'=overlapped.pos[as.character(1:length(decorated.noodles))])
 
-	ovrl.dir<-tapply(as.character(strand(TSS))[subjectHits(overla)],queryHits(overla),paste,collapse=', ')
+	ovrl.dir<-tapply(as.character(strand(TSS))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
 
-	DM.CpGIs.stat<-cbind(DM.CpGIs.stat,'ovrl.dir'=ovrl.dir[as.character(1:length(DM.CpGIs.GRanges))])
+	decorated.noodles<-cbind(decorated.noodles,'ovrl.dir'=ovrl.dir[as.character(1:length(decorated.noodles))])
 
 	message('mapped')
 
-	#print(min(start(DM.Genes)))
-	
-	DM.Genes
+	decorated.noodles
+
 }
 
 
