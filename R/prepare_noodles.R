@@ -2,11 +2,14 @@
 #A. Favorov, E. Fertig, S. Wheelan 2014
 #prepare noodles
 
-#returns noodles that uniformly cover
-#the set of chromosomes that are described by 
-#sequinfo
-#seqinfo is seqinfo or a vector of ints with the names as chromosome.names
-prepare.uniform.noodles<-function(seq.info,noodle.length=1000)
+#'prepare.covering.noodles
+#'
+#'prepare intervals (noodles) of the same lenght that adjacently cover a set of chromosomes, which is described by sequinfo
+#'@param noodle.length length of each noodle
+#'@param seq.info is \code{seqinfo} or a vector of ints with the names as chromosome.names
+#'@return \code{GRanges} that contain the covering set of noodles
+#'@seealso \code{GRanges}, \code{seqinfo}
+prepare.covering.noodles<-function(seq.info,noodle.length=1000)
 {
 	
 	if (class(seq.info) == 'Seqinfo')
