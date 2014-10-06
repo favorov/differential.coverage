@@ -4,7 +4,7 @@
 %
 % favorov@sensi.org
 \name{Differential.Coverage}
-\alias{DifferentialCoverage}
+\alias{Differential.Coverage}
 \alias{Differential.Coverage-package}
 \docType{package}
 \title{
