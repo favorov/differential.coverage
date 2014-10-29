@@ -86,17 +86,16 @@ genes.with.TSS.covered<-function(
 				else NA
 			}
 		)
-		print(ishyper)
-		#DM.Genes$ishyper<-ishyper[as.character(noodle.TSS.Gene.Indices)]
-		noodle.TSS.Genes$ishyper<-ishyper[noodle.TSS.Gene.Indices]
+		noodle.TSS.Genes$ishyper<-ishyper[as.character(noodle.TSS.Gene.Indices)]
 		# we make the addressin because tapply return keys sorted, nothin to do with original order
+		#and, we address by kyes
 	}
 
 	if ('p.value' %in% names(elementMetadata(noodles)))
 	{
 		p.value<-tapply(noodles[queryHits(overlaps)]$p.value,subjectHits(overlaps),min)
 		# print(p.value)
-		noodle.TSS.Genes$p.value<-p.value[as.character(DM.Gene.Indices)] 
+		noodle.TSS.Genes$p.value<-p.value[as.character(noodle.TSS.Gene.Indices)] 
 		# we make the addressin because tapply return keys sorted, nothin to do with original order
 	}
 
@@ -104,7 +103,7 @@ genes.with.TSS.covered<-function(
 	{
 		fdr<-tapply(noodles[queryHits(overlaps)]$fdr,subjectHits(overlaps),min)
 		# print(p.value)
-		noodle.TSS.Genes$fdr<-fdr[as.character(DM.Gene.Indices)] 
+		noodle.TSS.Genes$fdr<-fdr[as.character(noodle.TSS.Gene.Indices)] 
 		# we make the addressin because tapply return keys sorted, nothin to do with original order
 	}
 	
@@ -112,7 +111,7 @@ genes.with.TSS.covered<-function(
 	{
 		FDR<-tapply(noodles[queryHits(overlaps)]$FDR,subjectHits(overlaps),min)
 		# print(p.value)
-		noodle.TSS.Genes$FDR<-FDR[as.character(DM.Gene.Indices)] 
+		noodle.TSS.Genes$FDR<-FDR[as.character(noodle.TSS.Gene.Indices)] 
 		# we make the addressin because tapply return keys sorted, nothin to do with original order
 	}
 
