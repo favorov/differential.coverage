@@ -28,7 +28,7 @@ nucl.chromosomes.hg19<-function(chrM=FALSE)
 #'@param noodles the list of intervals to look TSS in
 #'@param flanks lenght to inflate the noddles by before the search
 #'@return \code{GRanges} object that is the list of the genes we look for
-genes.by.TSS.overlap<-function(
+genes.with.TSS.covered<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
 	flanks=0 #how far to shrink 
 )
@@ -128,10 +128,10 @@ genes.by.TSS.overlap<-function(
 #'Generates list of genes that start inside a given set of intervals
 #'
 #'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. 
-#'If a noodle has any overlapping genes, we form a text list of the genes.
-#'@inheritParams genes.by.TSS.overlap
+#'If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
+#'@inheritParams genes.with.TSS.covered
 #'@return \code{GRanges} object, noodles argument with added genes for each interval  
-gene.list.for.ovelapping.intervals<-function(
+genes.with.TSS.covered.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	flanks=0 #how far to shrink 
 )
