@@ -20,14 +20,14 @@ nucl.chromosomes.hg19<-function(chrM=FALSE)
 }
 
 
-#'genes.by.TSS.overlap
+#'genes.with.TSS.covered
 #'
 #'Generates list of genes that start inside a given set of intervals
 #'
 #'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
-#'@param noodles the list of intervals to look TSS in
+#'@param noodles the \code{GRanges} list of intervals to look TSS in
 #'@param flanks lenght to inflate the noddles by before the search
-#'@return \code{GRanges} object that is the list of the genes we look for
+#'@return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
 genes.with.TSS.covered<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
 	flanks=0 #how far to shrink 
@@ -122,14 +122,14 @@ genes.with.TSS.covered<-function(
 
 
 
-#'gene.list.for.ovelapping.intervals
+#'genes.with.TSS.covered.by.interval
 #'
-#'Generates list of genes that start inside a given set of intervals
+#'Generates a list of genes (possibly, empty) that start inside each interval
 #'
 #'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. 
 #'If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
 #'@inheritParams genes.with.TSS.covered
-#'@return \code{GRanges} object, noodles argument with added genes for each interval  
+#'@return \code{GRanges} object, noodles argument with added TSS-overlapped genes for each interval  
 genes.with.TSS.covered.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	flanks=0 #how far to shrink 
@@ -162,7 +162,7 @@ genes.with.TSS.covered.by.interval<-function(
 	overlapa<-findOverlaps(expanded.noodles,TSS)
 	message('overlapped')
 	
-	decorated.nooles<-noodles
+	decorated.noodles<-noodles
 
 	#overlapped.TSS
 
@@ -184,4 +184,16 @@ genes.with.TSS.covered.by.interval<-function(
 
 }
 
-
+#'closest.gene.by.interval
+#'
+#'Find the closest gene for each of th given set of intervals
+#'
+#'@param noodles the \code{GRanges} list of intervals to look the colses gene 
+#'@return \code{GRanges} object, noodles argument with added closest gene info for each interval  
+closest.gene.by.interval<-function(
+	noodles # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
+)
+{
+	decorated.noodles<-noodles
+	decorated.noodles
+}

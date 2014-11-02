@@ -4,7 +4,7 @@
 #'CountCoverageOfNoodles
 #'
 #'It is a central function of all the Differential.Coverage package. It gets a set of intervals (noodles) as a \code{GRanges} and a list of names of bed files.
-#'Each bedfile represents a sample. For each noodle and each sample, the lenght of covered part of the noodle is calculated.
+#'Each bedfile represents a sample. For each noodle and each sample, the the sum of the lenght of intervals (read from the sample's bed file) that intersect with the noodle is returned.
 #'
 #'@param noodles \code{GRanges} with the intervals
 #'@param bedfilnames list of names of bedfiles, one per sample, with some (e.g. methylation) coverage information

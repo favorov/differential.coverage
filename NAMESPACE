@@ -1,2 +1,2 @@
-export('CountCoverageOfNoodles','nucl.chromosomes.hg19','prepare.covering.noodles','genes.with.TSS.covered.by.interval','genes.with.TSS.covered','prepare.tabulated.fisher','tab.fisher.row.no')
+export('CountCoverageOfNoodles','nucl.chromosomes.hg19','prepare.covering.noodles','genes.with.TSS.covered.by.interval','genes.with.TSS.covered','closest.gene.by.interval','prepare.tabulated.fisher','tab.fisher.row.no')
 import('IRanges','GenomicRanges','rtracklayer','Homo.sapiens','org.Hs.eg.db')
