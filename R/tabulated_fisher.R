@@ -1,5 +1,5 @@
 #Differential.Coverage library
-#A. Favorov, E. Fertig, S. Wheelan 2014
+#A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014
 #tabulated Fisher
 
 #'prepare.tabulated.fisher
