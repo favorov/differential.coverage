@@ -188,12 +188,45 @@ genes.with.TSS.covered.by.interval<-function(
 #'
 #'Find the closest gene for each of th given set of intervals
 #'
-#'@param noodles the \code{GRanges} list of intervals to look the colses gene 
+#'@param noodles the \code{GRanges} list of intervals to look the closest gene 
 #'@return \code{GRanges} object, noodles argument with added closest gene info for each interval  
-closest.gene.by.interval<-function(
+closest.gene.start.by.interval<-function(
 	noodles # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 )
 {
 	decorated.noodles<-noodles
+	message('Looking for closest gene')
+
+	TSS<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
+
+	geneSymbols <- select(
+		org.Hs.eg.db,
+		keys=as.character(TSS$gene_id),
+		columns=c('SYMBOL'),
+		keytype='ENTREZID'
+	)
+
+	TSS$SYMBOL <- geneSymbols$SYMBOL
+
+	tss.start<-ifelse(strand(TSS)=='+',start(TSS),end(TSS))
+
+	start(TSS)<-tss.start
+	end(TSS)<-tss.start
+
+	near.TSS<-nearest(noodles,TSS)
+
+	dist.TSS<-distance(noodles,TSS[near.TSS])
+
+	dist.TSS<-ifelse(strand(TSS)[near.TSS]=='+',
+			ifelse(start(noodles)>start(TSS)[near.TSS],dist.TSS,-dist.TSS),
+			ifelse(start(noodles)>start(TSS)[near.TSS],-dist.TSS,dist.TSS)
+	)
+
+	decorated.noodles$closest.TSS<-TSS$SYMBOL[near.TSS]
+	decorated.noodles$pos<-start(TSS)[near.TSS]
+	decorated.noodles$dir<-as.character(strand(TSS)[near.TSS])
+	decorated.noodles$dist<-dist.TSS
+
+	message('done\n')
 	decorated.noodles
 }
