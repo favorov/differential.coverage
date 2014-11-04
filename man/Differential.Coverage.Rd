@@ -1,6 +1,5 @@
 % Differential.Coverage is a collection of routines useful for differential analysis of interval (probably, methyl-seq)  
 %
-% (c) 2014 Alexander Favorov, Elana J. Fertig, Sarah J. Wheelan
 %
 % favorov@sensi.org
 \name{Differential.Coverage}
