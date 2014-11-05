@@ -8,7 +8,7 @@ genes.with.TSS.covered.by.interval(noodles, flanks = 0)
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
 
-\item{flanks}{lenght to inflate the noddles by before the search}
+\item{flanks}{lenght to inflate the noddles by before the search; if >0, the seqlenghtinformation is to be set in \code{noodles}}
 }
 \value{
 \code{GRanges} object, noodles argument with added TSS-overlapped genes for each interval

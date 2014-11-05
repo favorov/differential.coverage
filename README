@@ -8,3 +8,5 @@ We start it as a package just to easy install to R.
 0.3 - tabulated fisher added
 0.4 - annotaion functions improved; roxygen documentation added
 0.5 - annotation function fixed; names changed
+0.6 - working annotation functions : 
+	genes.with.TSS.covered.by.interval, genes.with.TSS.covered, closest.gene.start.by.interval

@@ -1,8 +1,8 @@
 Package: differential.coverage
 Type: Package
 Title: Differential Coverage package
-Version: 0.0.5
-Date: 2014-10-29
+Version: 0.0.6
+Date: 2014-11-05
 Author@R: c( person("Alexander","Favorov",email = "favorov@sensi.org"),
     person("Elana","J.","Fertig", email="ejfertig@jhmi.edu"),
     person("Daria","A.",","Gaykalova", email="dgaykal1@jhmi.edu"),

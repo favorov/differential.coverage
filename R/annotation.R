@@ -26,7 +26,7 @@ nucl.chromosomes.hg19<-function(chrM=FALSE)
 #'
 #'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 #'@param noodles the \code{GRanges} list of intervals to look TSS in
-#'@param flanks lenght to inflate the noddles by before the search
+#'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlenghtinformation is to be set in \code{noodles}
 #'@return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
 genes.with.TSS.covered<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
@@ -139,6 +139,7 @@ genes.with.TSS.covered.by.interval<-function(
 	#inflate DM noodles
 	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
 	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
+	#inflated
 	#prepare gene TSS
 	genelist<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
 
@@ -166,17 +167,17 @@ genes.with.TSS.covered.by.interval<-function(
 
 	#overlapped.TSS
 
-	overlapped.TSS<-tapply(TSS$SYMBOL[subjectHits(overla)],queryHits(overlapa),paste,collapse=', ')
+	overlapped.TSS<-tapply(TSS$SYMBOL[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	decorated.noodles$overlapped.TSS=overlapped.TSS[as.character(1:length(decorated.noodles))]
+	#we need this addressing scheme ([as.character(1:length(decorated.noodles))]) because names(overlapped.TSS)
+	#are the indices of noodles that have overlapped TSS. Those that have not are not represented in overlapped.TSS
+	#and after our indexing they are NA, and it is exacltly what we want them to be
 
-	decorated.noodles<-cbind(decorated.noodles,'overlapped.TSS'=overlapped.TSS[as.character(1:length(decorated.noodles))])
-
-	overlapped.pos<-tapply(as.character(start(TSS))[subjectHits(overla)],queryHits(overlapa),paste,collapse=', ')
-
-	decorated.noodles<-cbind(decorated.noodles,'overlapped.pos'=overlapped.pos[as.character(1:length(decorated.noodles))])
+	overlapped.pos<-tapply(as.character(start(TSS))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	decorated.noodles$overlapped.pos=overlapped.pos[as.character(1:length(decorated.noodles))]
 
 	ovrl.dir<-tapply(as.character(strand(TSS))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-
-	decorated.noodles<-cbind(decorated.noodles,'ovrl.dir'=ovrl.dir[as.character(1:length(decorated.noodles))])
+	decorated.noodles$ovrl.dir=ovrl.dir[as.character(1:length(decorated.noodles))]
 
 	message('mapped')
 
@@ -195,7 +196,7 @@ closest.gene.start.by.interval<-function(
 )
 {
 	decorated.noodles<-noodles
-	message('Looking for closest gene')
+	message('closest')
 
 	TSS<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
 
@@ -227,6 +228,6 @@ closest.gene.start.by.interval<-function(
 	decorated.noodles$dir<-as.character(strand(TSS)[near.TSS])
 	decorated.noodles$dist<-dist.TSS
 
-	message('done\n')
+	message('mapped')
 	decorated.noodles
 }
