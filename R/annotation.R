@@ -2,23 +2,6 @@
 #A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014
 #annotation utilities
 
-#'nucl.chromosomes.hg19
-#'
-#'Returns the choromosome lengths for hg19
-#'
-#'Returns the choromosome lengths for hg19 as a \code{seqinfo} object.
-#'@param chrM boolean: if FALSE (default), returns info only for chr 1..22, X and Y. If TRUE, 1..22, X, Y and M
-#'@return \code{seqinfo} object with the chromosome desriptions
-#'@seealso seqinfo
-nucl.chromosomes.hg19<-function(chrM=FALSE)
-{
-	chr.all<-seqinfo(TxDb.Hsapiens.UCSC.hg19.knownGene)
-	if (chrM)
-		chr.all[names(chr.all)[1:25]]
-	else
-		chr.all[names(chr.all)[1:24]]
-}
-
 
 #'genes.with.TSS.covered
 #'
