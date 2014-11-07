@@ -57,9 +57,18 @@ prepare.tabulated.fisher<-function(Y,N,folder='.',load=TRUE,save=TRUE)
 			tabulated.fisher[tab.fisher.row.no(Y,N,MY,MN),]<-c(fisherres$p.value,cotable[1,2]/N,cotable[1,1]/Y,fisherres$estimate,fisherres$conf.int[1],fisherres$conf.int[2])
 		}	
 	#print(dim(tabulated.fisher))
-	message('saving fisher tabulation')
 	if(save)
-		save(file=Rda.name,list=c('tabulated.fisher','Y','N'))
+	{
+		if (!file.exists(Rda.name))
+		{
+			message('Saving tabulated Fisher')
+			save(file=Rda.name,list=c('tabulated.fisher','Y','N'))
+		}
+		else
+		{
+			message('tabulated Fisher file already exist')
+		}
+	}
 	return (tabulated.fisher) 	
 }
 
