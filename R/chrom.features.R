@@ -29,10 +29,11 @@ nucl.chromosomes.hg19<-function(chrM=FALSE)
 get.cytoband.ranges<-function()
 {
 	cbands<-getCytoband()
-	GRanges(
+	karyotype<-GRanges(
 		seqinfo=nucl.chromosomes.hg19(),
 		seqnames=cbands$chrom,
 		range=IRanges(start=cbands$start+1,end=cbands$end),
 		name=cbands$name,
 		gieStain=cbands$gieStain)
+	karyotype[order(karyotype)]
 }
