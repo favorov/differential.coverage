@@ -1,8 +1,8 @@
 Package: differential.coverage
 Type: Package
 Title: Differential Coverage package
-Version: 0.0.6
-Date: 2014-11-05
+Version: 0.0.7
+Date: 2014-11-14
 Author@R: c( person("Alexander","Favorov",email = "favorov@sensi.org"),
     person("Elana","J.","Fertig", email="ejfertig@jhmi.edu"),
     person("Daria","A.",","Gaykalova", email="dgaykal1@jhmi.edu"),
@@ -23,8 +23,9 @@ Depends:
     GenomicRanges,
     Homo.sapiens,
     org.Hs.eg.db,
-    rtracklayer
+    rtracklayer,
+    Matrix
 biocViews: Annotation, Genetics, Infrastructure, DataRepresentation,
     Bioinformatics
 URL: https://github.com/favorov/differential.coverage
-Packaged: 2014-10-11 07:07:07 MSD; favorov
+Packaged: 2014-11-14 07:07:07 EST; favorov
