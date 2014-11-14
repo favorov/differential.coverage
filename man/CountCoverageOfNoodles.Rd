@@ -13,7 +13,7 @@ CountCoverageOfNoodles(noodles, bedfilnames, bed.ids = bedfilnames)
 \item{bed.ids}{optional list of names for the samples, they will be used as column names in the result. Default = \code{bedfilnames}}
 }
 \value{
-\code{data.frame}, each row correspond to a noodle; columns are samples
+\code{Matrix}, each row correspond to a noodle; columns are samples, sparse=TRUE
 }
 \description{
 It is a central function of all the Differential.Coverage package. It gets a set of intervals (noodles) as a \code{GRanges} and a list of names of bed files.

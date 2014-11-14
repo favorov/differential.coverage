@@ -9,7 +9,7 @@
 #'@param noodles \code{GRanges} with the intervals
 #'@param bedfilnames list of names of bedfiles, one per sample, with some (e.g. methylation) coverage information
 #'@param bed.ids optional list of names for the samples, they will be used as column names in the result. Default = \code{bedfilnames}
-#'@return \code{data.frame}, each row correspond to a noodle; columns are samples
+#'@return \code{Matrix}, each row correspond to a noodle; columns are samples, sparse=TRUE
 #'@seealso \code{Differential.Coverage}
 CountCoverageOfNoodles<-function(noodles,bedfilnames,bed.ids=bedfilnames){
 	if (class(noodles)!='GRanges')
@@ -23,7 +23,7 @@ CountCoverageOfNoodles<-function(noodles,bedfilnames,bed.ids=bedfilnames){
 	else
 		names(bedfilnames)<-bed.ids
 	message('coverage')
-	noodles.coverage<-data.frame(matrix(0,ncol=length(bed.ids),nrow=length(noodles)))
+	noodles.coverage<-Matrix(0,ncol=length(bed.ids),nrow=length(noodles),sparse = TRUE)
 	colnames(noodles.coverage)<-bed.ids
 	for (bed.id in bed.ids)
 	{
