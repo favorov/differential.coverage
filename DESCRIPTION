@@ -24,6 +24,7 @@ Depends:
     Homo.sapiens,
     org.Hs.eg.db,
     rtracklayer,
+	SNPchip,
     Matrix
 biocViews: Annotation, Genetics, Infrastructure, DataRepresentation,
     Bioinformatics
