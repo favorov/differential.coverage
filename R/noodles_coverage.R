@@ -31,7 +31,7 @@ CountCoverageOfNoodles<-function(noodles,bedfilnames,bed.ids=bedfilnames){
 		beads<-import(bedfilnames[bed.id])
 		overrle<-findOverlaps(noodles,beads)
 		covered<-tapply(width(beads[subjectHits(overrle)]),queryHits(overrle),sum)
-		noodles.coverage[as.integer(names(covered)),bed.id]<-covered
+		noodles.coverage[as.integer(names(covered)),bed.id]<-as.integer(covered)
 	}
 	noodles.coverage
 }
