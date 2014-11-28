@@ -1,13 +1,14 @@
 We start it as a package just to easy install to R.
 
-0.1 - initial version, nothing works yet
-0.2 - we can: 
+0.0.1 - initial version, nothing works yet
+0.0.2 - we can: 
 	prepare uniform intervals (noodles)
 	calcutate the coverage for intervals & list of bed files
 	generate a list of genes that are around (+-flanks) ranges from GRanges
-0.3 - tabulated fisher added
-0.4 - annotaion functions improved; roxygen documentation added
-0.5 - annotation function fixed; names changed
-0.6 - working annotation functions : 
+0.0.3 - tabulated fisher added
+0.0.4 - annotaion functions improved; roxygen documentation added
+0.0.5 - annotation function fixed; names changed
+0.0.6 - working annotation functions : 
 	genes.with.TSS.covered.by.interval, genes.with.TSS.covered, closest.gene.start.by.interval
-0.7 - CountCoverageOfNoodles returns sparse Matrix
+0.0.7 - CountCoverageOfNoodles returns sparse Matrix
+0.0.8 - count.coverage.of.noodles is a new version; now, it correctly works with bed intervals that are longer than noodles; max(coverage of noodle)==width(noodle). indicate.any.coverage.of.noodles added. 
