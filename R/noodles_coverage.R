@@ -72,14 +72,7 @@ indicate.any.coverage.of.noodles<-function(noodles,bedfilnames,bed.ids=bedfilnam
 	}
 	noodles.coverage
 }
-#'CountCoverageOfNoodles
-#'
-#'It is a deprecated central function of all the differential.coverage package. It gets a set of intervals (noodles) as a \code{GRanges} and a list of names of bed files.
-#'Each bedfile represents a sample. For each noodle and each sample, the the sum of the lenght of intervals (read from the sample's bed file) that intersect with the noodle is returned.
-#'
-#'@inheritParams count.coverage.of.noodles 
-#'@return \code{Matrix}, each row correspond to a noodle; columns are samples, sparse=TRUE
-#'@seealso \code{differential.coverage}
+
 CountCoverageOfNoodles<-function(noodles,bedfilnames,bed.ids=bedfilnames){
 	.Deprecated('count.coverage.of.noodles')
 	count.coverage.of.noodles(noodles,bedfilnames,bed.ids)
