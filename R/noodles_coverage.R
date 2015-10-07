@@ -30,8 +30,13 @@ count.coverage.of.noodles<-function(noodles,bedfilnames,bed.ids=bedfilnames){
 		message(bed.id)
 		beads<-import(bedfilnames[bed.id])
 		overrle<-findOverlaps(noodles,beads)
+		#end(beads)[subjectHits(overrle) is a vector of the same lenght as the hit list, and 
+		#it carries the ends of all beads (actully, the bedfile intervals).
+		#analogous are end(noodles)[queryHits(overrle)] (ends of all the noddles that are intersected by beads, etc
 		ovelap.width<-pmin(end(beads)[subjectHits(overrle)],end(noodles)[queryHits(overrle)])-
 			pmax(start(beads)[subjectHits(overrle)],start(noodles)[queryHits(overrle)])+1
+		#so, overrap.width is a list of lengthes of all the noodle x bead overlaps in the same order (and length)
+		#as they are listed by findOverlaps in overrle
 		covered<-tapply(ovelap.width,queryHits(overrle),sum)
 		noodles.coverage[as.integer(names(covered)),bed.id]<-as.integer(covered)
 	}
