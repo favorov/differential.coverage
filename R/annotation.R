@@ -2,6 +2,15 @@
 #A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014
 #annotation utilities
 
+#get the name of the TxDb object by the genome name
+.knownGenes.by.genome.id<-function(genome.id)
+{
+	if (genome.id=='hg19')
+		return('TxDb.Hsapiens.UCSC.hg19.knownGene')
+	if(genome.id=='hg18')
+		return('TxDb.Hsapiens.UCSC.hg18.knownGene')
+	stop(paste0('I cannot make annotation for genome ',genome.id))
+}
 
 #'genes.with.TSS.covered
 #'
@@ -9,21 +18,24 @@
 #'
 #'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 #'@param noodles the \code{GRanges} list of intervals to look TSS in
-#'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlenghtinformation is to be set in \code{noodles}
+#'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlenght information is to be set in \code{noodles}
+#'@param genome.id the character string with the id of genome we work with, the default is 'hg19', currntly, we work with hg19 or hg18
 #'@return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
 genes.with.TSS.covered<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
-	flanks=0 #how far to shrink 
+	flanks=0, #how far to shrink
+	genome.id='hg19' 
 )
 {
+	knownGenes<-.knownGenes.by.genome.id(genome.id)
 	expanded.noodles<-noodles
 	#inflate DM noodles
 	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
 	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
 	#inflated
 
-	#prepare gene TSS
-	genelist<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
+	#prepare gene TSS; we refere the TxDb object by name
+	genelist<- genes(get(knownGenes)) 
 	#initialise the list to subset later
 
 	TSS<- genelist
@@ -109,22 +121,24 @@ genes.with.TSS.covered<-function(
 #'
 #'Generates a list of genes (possibly, empty) that start inside each interval
 #'
-#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. 
+#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19' and TxDb.Hsapiens.UCSC.hg18.knownGene for hg18). 
 #'If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
 #'@inheritParams genes.with.TSS.covered
 #'@return \code{GRanges} object, noodles argument with added TSS-overlapped genes for each interval  
 genes.with.TSS.covered.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
-	flanks=0 #how far to shrink 
+	flanks=0, #how far to shrink 
+	genome.id='hg19' 
 )
 {
+	knownGenes<-.knownGenes.by.genome.id(genome.id)
 	expanded.noodles<-noodles
 	#inflate DM noodles
 	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
 	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
 	#inflated
-	#prepare gene TSS
-	genelist<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
+	#prepare gene TSS; we refere the TxDb object by name
+	genelist<- genes(get(knownGenes)) 
 
 	TSS<- genelist
 
@@ -175,13 +189,16 @@ genes.with.TSS.covered.by.interval<-function(
 #'@param noodles the \code{GRanges} list of intervals to look the closest gene 
 #'@return \code{GRanges} object, noodles argument with added closest gene info for each interval  
 closest.gene.start.by.interval<-function(
-	noodles # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
+	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
+	genome.id='hg19' 
 )
 {
+	knownGenes<-.knownGenes.by.genome.id(genome.id)
 	decorated.noodles<-noodles
 	message('closest')
 
-	TSS<- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
+	#prepare gene TSS; we refere the TxDb object by name
+	TSS<- genes(get(knownGenes)) 
 
 	geneSymbols <- select(
 		org.Hs.eg.db,
