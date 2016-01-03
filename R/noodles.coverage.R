@@ -101,8 +101,8 @@ max.peak.score.for.each.noodle<-function(noodles,bedfilnames,bed.ids=bedfilnames
 	else
 		names(bedfilnames)<-bed.ids
 	message('coverage')
-	noodles.coverage<-Matrix(0,ncol=length(bed.ids),nrow=length(noodles),sparse = TRUE)
-	colnames(noodles.coverage)<-bed.ids
+	noodles.max.scores<-Matrix(0,ncol=length(bed.ids),nrow=length(noodles),sparse = TRUE)
+	colnames(noodles.max.scores)<-bed.ids
 	for (bed.id in bed.ids)
 	{
 		message(bed.id)
@@ -110,7 +110,7 @@ max.peak.score.for.each.noodle<-function(noodles,bedfilnames,bed.ids=bedfilnames
 		overrle<-findOverlaps(noodles,beads)
 		#beads$score[subjectHits(overrle) is a vector of scores on intersected peaks
 		maxi<-tapply(beads$score[subjectHits(overrle)],queryHits(overrle),max)
-		noodles.max.scores[as.integer(names(covered)),bed.id]<-maxi
+		noodles.max.scores[as.integer(names(maxi)),bed.id]<-as.numeric(maxi)
 	}
 	noodles.max.scores
 }
