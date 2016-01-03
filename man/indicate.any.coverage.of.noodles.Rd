@@ -14,7 +14,7 @@ indicate.any.coverage.of.noodles(noodles, bedfilnames, bed.ids = bedfilnames)
 \item{bed.ids}{optional list of names for the samples, they will be used as column names in the result. Default = \code{bedfilnames}}
 }
 \value{
-\code{Matrix}, each row correspond to a noodle; columns are samples, sparse=TRUE
+\code{Matrix}, each row correspond to a noodle; columns are samples, sparse=TRUE, value=0 or 1
 }
 \description{
 It is the alterantive central function of all the differential.coverage package. It gets a set of intervals (noodles) as a \code{GRanges} and a list of names of bed files.
