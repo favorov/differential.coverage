@@ -1,5 +1,5 @@
 #differential.coverage library
-#A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014
+#A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014-2016
 #prepare noodles
 
 #'prepare.covering.noodles
