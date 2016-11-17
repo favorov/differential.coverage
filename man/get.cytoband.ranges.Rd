@@ -2,7 +2,7 @@
 % Please edit documentation in R/chrom.features.R
 \name{get.cytoband.ranges}
 \alias{get.cytoband.ranges}
-\title{get.cytoband.ranges for hg19, no hg18 version yet}
+\title{get.cytoband.ranges for hg19, no hg18 or hg 38 version yet}
 \usage{
 get.cytoband.ranges()
 }

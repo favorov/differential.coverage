@@ -20,7 +20,7 @@ genes.with.TSS.covered.by.interval(noodles, flanks = 0, genome.id = "hg19")
 Generates a list of genes (possibly, empty) that start inside each interval
 }
 \details{
-After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19' and TxDb.Hsapiens.UCSC.hg18.knownGene for hg18). 
+After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19', TxDb.Hsapiens.UCSC.hg18.knownGene for hg18 or TxDb.Hsapiens.UCSC.hg38.knownGene for hg38). 
 If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
 }
 
