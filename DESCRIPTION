@@ -1,8 +1,8 @@
 Package: differential.coverage
 Type: Package
 Title: Differential Coverage package
-Version: 0.1.0
-Date: 2016-01-03
+Version: 0.1.1
+Date: 2016-11-16
 Author@R: c( person("Alexander","Favorov",email = "favorov@sensi.org"),
     person("Elana","J.","Fertig", email="ejfertig@jhmi.edu"),
     person("Daria","A.",","Gaykalova", email="dgaykal1@jhmi.edu"),
@@ -25,6 +25,7 @@ Depends:
     Homo.sapiens,
     TxDb.Hsapiens.UCSC.hg18.knownGene,
     TxDb.Hsapiens.UCSC.hg19.knownGene,
+    TxDb.Hsapiens.UCSC.hg38.knownGene,
     org.Hs.eg.db,
     rtracklayer,
     SNPchip,

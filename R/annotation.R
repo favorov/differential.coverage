@@ -5,6 +5,8 @@
 #get the name of the TxDb object by the genome name
 .knownGenes.by.genome.id<-function(genome.id)
 {
+	if (genome.id=='hg38')
+		return('TxDb.Hsapiens.UCSC.hg38.knownGene')
 	if (genome.id=='hg19')
 		return('TxDb.Hsapiens.UCSC.hg19.knownGene')
 	if(genome.id=='hg18')
@@ -16,7 +18,7 @@
 #'
 #'Generates list of genes that start inside a given set of intervals
 #'
-#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
+#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene} for \code{genome.id==hg19} (default), acording to \code{TxDb.Hsapiens.UCSC.hg18.knownGene} for \code{genome.id==hg18} and to \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for \code{genome.id==hg38}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 #'@param noodles the \code{GRanges} list of intervals to look TSS in
 #'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlenght information is to be set in \code{noodles}
 #'@param genome.id the character string with the id of genome we work with, the default is 'hg19', currntly, we work with hg19 or hg18
@@ -121,7 +123,7 @@ genes.with.TSS.covered<-function(
 #'
 #'Generates a list of genes (possibly, empty) that start inside each interval
 #'
-#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19' and TxDb.Hsapiens.UCSC.hg18.knownGene for hg18). 
+#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19', TxDb.Hsapiens.UCSC.hg18.knownGene for hg18 or TxDb.Hsapiens.UCSC.hg38.knownGene for hg38). 
 #'If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
 #'@inheritParams genes.with.TSS.covered
 #'@return \code{GRanges} object, noodles argument with added TSS-overlapped genes for each interval  

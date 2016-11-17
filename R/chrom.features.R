@@ -36,7 +36,25 @@ nucl.chromosomes.hg18<-function(chrM=FALSE)
 		chr.all[names(chr.all)[1:24]]
 }
 
-#'get.cytoband.ranges for hg19, no hg18 version yet
+#'nucl.chromosomes.hg38
+#'
+#'Returns the choromosome lengths for hg38
+#'
+#'Returns the choromosome lengths for hg18 as a \code{seqinfo} object.
+#'@param chrM boolean: if FALSE (default), returns info only for chr 1..22, X and Y. If TRUE, 1..22, X, Y and M
+#'@return \code{seqinfo} object with the chromosome desriptions
+#'@seealso seqinfo
+nucl.chromosomes.hg38<-function(chrM=FALSE)
+{
+	chr.all<-seqinfo(TxDb.Hsapiens.UCSC.hg38.knownGene)
+	if (chrM)
+		chr.all[names(chr.all)[1:25]]
+	else
+		chr.all[names(chr.all)[1:24]]
+}
+
+
+#'get.cytoband.ranges for hg19, no hg18 or hg 38 version yet
 #'
 #'Returns \code{GRanges} with cytobands.
 #'

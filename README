@@ -13,4 +13,5 @@ We start it as a package just to easy install to R.
 0.0.7 - CountCoverageOfNoodles returns sparse Matrix
 0.0.8 - count.coverage.of.noodles is a new version; now, it correctly works with bed intervals that are longer than noodles; max(coverage of noodle)==width(noodle). indicate.any.coverage.of.noodles added. 
 0.0.9 - added support for hg18
-0.1.0 function max.peak.score.for.each.noodle added
+0.1.0 - function max.peak.score.for.each.noodle added
+0.1.1 - added support for hg38
