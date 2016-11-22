@@ -196,7 +196,6 @@ closest.gene.start.by.interval<-function(
 )
 {
 	knownGenes<-.knownGenes.by.genome.id(genome.id)
-	decorated.noodles<-noodles
 	message('closest')
 
 	#prepare gene TSS; we refere the TxDb object by name
@@ -216,13 +215,26 @@ closest.gene.start.by.interval<-function(
 	start(TSS)<-tss.start
 	end(TSS)<-tss.start
 
-	near.TSS<-nearest(noodles,TSS)
+	#now, TSS contains the gene start
+  
+	near.TSS<<-nearest(noodles,TSS)
 
-	dist.TSS<-distance(noodles,TSS[near.TSS])
+	#some nearest contatain NA
+	#we just remove them from result
+	
+	#mapping to no-NA indices
+	is.a.near.TSS <<- !is.na(near.TSS)
+
+	decorated.noodles<<-noodles[is.a.near.TSS]
+
+	near.TSS<<-near.TSS[is.a.near.TSS]
+	
+	dist.TSS<<-distance(decorated.noodles,TSS[near.TSS])
+
 
 	dist.TSS<-ifelse(strand(TSS)[near.TSS]=='+',
-			ifelse(start(noodles)>start(TSS)[near.TSS],dist.TSS,-dist.TSS),
-			ifelse(start(noodles)>start(TSS)[near.TSS],-dist.TSS,dist.TSS)
+			ifelse(start(decorated.noodles)>start(TSS)[near.TSS],dist.TSS,-dist.TSS),
+			ifelse(start(decorated.noodles)>start(TSS)[near.TSS],-dist.TSS,dist.TSS)
 	)
 
 	decorated.noodles$closest.TSS<-TSS$SYMBOL[near.TSS]
