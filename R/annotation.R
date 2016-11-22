@@ -36,10 +36,13 @@ genes.with.TSS.covered<-function(
 	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
 	#inflated
 
-	#prepare gene TSS; we refere the TxDb object by name
-	genelist<- genes(get(knownGenes)) 
+	#prepare genes; we refere the TxDb object by name
+	#genelist<- genes(get(knownGenes)) 
+	genelist<- unlist(genes(get(knownGenes),single.strand.genes.only=TRUE))
+	genelist$gene_id=names(genelist)
 	#initialise the list to subset later
 
+	#prepare TSS
 	TSS<- genelist
 	#this copy is for overlaps
 
@@ -138,7 +141,9 @@ genes.intersected<-function(
 	#inflated
 
 	#prepare genes; we refere the TxDb object by name
-	genelist<- genes(get(knownGenes)) 
+	#genelist<- genes(get(knownGenes)) 
+	genelist<- unlist(genes(get(knownGenes),single.strand.genes.only=TRUE))
+	genelist$gene_id=names(genelist)
 	#initialise the list to subset later
 
 	
@@ -234,7 +239,9 @@ genes.with.TSS.covered.by.interval<-function(
 	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
 	#inflated
 	#prepare gene TSS; we refere the TxDb object by name
-	genelist<- genes(get(knownGenes)) 
+	#genelist<- genes(get(knownGenes)) 
+	genelist<- unlist(genes(get(knownGenes),single.strand.genes.only=TRUE))
+	genelist$gene_id=names(genelist)
 
 	TSS<- genelist
 
@@ -293,7 +300,11 @@ closest.gene.start.by.interval<-function(
 	message('closest')
 
 	#prepare gene TSS; we refere the TxDb object by name
-	TSS<- genes(get(knownGenes)) 
+	#TSS<- genes(get(knownGenes)) 
+	genelist<- unlist(genes(get(knownGenes),single.strand.genes.only=TRUE))
+	genelist$gene_id=names(genelist)
+	
+	TSS<-genelist
 
 	geneSymbols <- select(
 		org.Hs.eg.db,
