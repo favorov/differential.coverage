@@ -117,6 +117,100 @@ genes.with.TSS.covered<-function(
 }
 
 
+#'genes.intersected
+#'
+#'Generates list of genes that intersect a given set of intervals
+#'
+#'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the genes that intersect the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene} for \code{genome.id==hg19} (default), acording to \code{TxDb.Hsapiens.UCSC.hg18.knownGene} for \code{genome.id==hg18} and to \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for \code{genome.id==hg38}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
+#'@inheritParams genes.with.TSS.covered
+#'@return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
+genes.intersected<-function(
+	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
+	flanks=0, #how far to shrink
+	genome.id='hg19' 
+)
+{
+	knownGenes<-.knownGenes.by.genome.id(genome.id)
+	expanded.noodles<-noodles
+	#inflate DM noodles
+	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
+	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
+	#inflated
+
+	#prepare genes; we refere the TxDb object by name
+	genelist<- genes(get(knownGenes)) 
+	#initialise the list to subset later
+
+	
+	geneSymbols <- select(
+		org.Hs.eg.db,
+		keys=as.character(genelist$gene_id),
+		columns=c('SYMBOL'),
+		keytype='ENTREZID'
+	)
+
+	genelist$SYMBOL <- geneSymbols$SYMBOL
+
+
+	#make overlap
+	overlaps<-findOverlaps(expanded.noodles,genelist)
+	message('overlapped')
+
+	noodle.Gene.Indices<-unique(subjectHits(overlaps))
+	#indices of all the genes tha were hit by any noodle
+	#maybe, some of them are hit with more than one
+
+	noodle.Genes<-genelist[noodle.Gene.Indices]
+	
+
+	noodle.Genes$SYMBOL<-genelist$SYMBOL[noodle.Gene.Indices]
+
+	
+	if ('ishyper' %in% names(elementMetadata(noodles)))
+	{
+		ishyper<- tapply(noodles[queryHits(overlaps)]$ishyper,subjectHits(overlaps),
+			function(li)
+			{	
+				vals<-unique(li)
+				if (length(vals)==1)
+					vals[1]
+				else NA
+			}
+		)
+		noodle.Genes$ishyper<-ishyper[as.character(noodle.Gene.Indices)]
+		# we make the addressin because tapply return keys sorted, nothin to do with original order
+		#and, we address by kyes
+	}
+
+	if ('p.value' %in% names(elementMetadata(noodles)))
+	{
+		p.value<-tapply(noodles[queryHits(overlaps)]$p.value,subjectHits(overlaps),min)
+		# print(p.value)
+		noodle.Genes$p.value<-p.value[as.character(noodle.Gene.Indices)] 
+		# we make the addressin because tapply return keys sorted, nothin to do with original order
+	}
+
+	if ('fdr' %in% names(elementMetadata(noodles)))
+	{
+		fdr<-tapply(noodles[queryHits(overlaps)]$fdr,subjectHits(overlaps),min)
+		# print(p.value)
+		noodle.Genes$fdr<-fdr[as.character(noodle.Gene.Indices)] 
+		# we make the addressin because tapply return keys sorted, nothin to do with original order
+	}
+	
+	if ('FDR' %in% names(elementMetadata(noodles)))
+	{
+		FDR<-tapply(noodles[queryHits(overlaps)]$FDR,subjectHits(overlaps),min)
+		# print(p.value)
+		noodle.Genes$FDR<-FDR[as.character(noodle.Gene.Indices)] 
+		# we make the addressin because tapply return keys sorted, nothin to do with original order
+	}
+
+	message('mapped')
+	noodle.Genes
+}
+
+
 
 
 #'genes.with.TSS.covered.by.interval

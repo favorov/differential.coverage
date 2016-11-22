@@ -16,3 +16,4 @@ We start it as a package just to easy install to R.
 0.1.0 - function max.peak.score.for.each.noodle added
 0.1.1 - added support for hg38
 0.1.2 - closest.gene.start.by.interval fixed. Now, it works even if a moodle is located on an chromosome that has no known genes.
+0.1.3 - genes.intersected function added
