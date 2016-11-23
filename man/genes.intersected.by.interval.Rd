@@ -14,13 +14,13 @@ genes.intersected.by.interval(noodles, flanks = 0, genome.id = "hg19")
 \item{genome.id}{the character string with the id of genome we work with, the default is 'hg19', currntly, we work with hg19 or hg18}
 }
 \value{
-\code{GRanges} object, noodles argument with added TSS-overlapped genes for each interval
+\code{GRanges} object, noodles argument with added gene-overlapped genes for each interval
 }
 \description{
 Generates a list of genes (possibly, empty) that intersects with each interval
 }
 \details{
-After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the genes that overlap with the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19', TxDb.Hsapiens.UCSC.hg18.knownGene for hg18 or TxDb.Hsapiens.UCSC.hg38.knownGene for hg38). 
-If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
+After the noodles (the set of intervals to search intersections with) are inflated by flanks, we look for all the genes that overlap with the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19', TxDb.Hsapiens.UCSC.hg18.knownGene for hg18 or TxDb.Hsapiens.UCSC.hg38.knownGene for hg38). 
+If a noodle (interval) overlaps more that one gene, we form a text list of the genes.
 }
 
