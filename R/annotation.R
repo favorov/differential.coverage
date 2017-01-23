@@ -54,7 +54,7 @@ genes.with.TSS.covered<-function(
 
 	#prepare genes; we refere the TxDb object by name
 	TSS<-.getKnownGeneList(genome.id)
-	.#initialise the list to subset later
+	#initialise the list to subset later
 
 	#prepare TSS
 	TSS<-genelist
