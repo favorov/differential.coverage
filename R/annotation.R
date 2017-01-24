@@ -53,7 +53,7 @@ genes.with.TSS.covered<-function(
 	#inflated
 
 	#prepare genes; we refere the TxDb object by name
-	TSS<-.getKnownGeneList(genome.id)
+	genelist<-.getKnownGeneList(genome.id)
 	#initialise the list to subset later
 
 	geneSymbols <- select(
@@ -62,6 +62,8 @@ genes.with.TSS.covered<-function(
 		columns=c('SYMBOL'),
 		keytype='ENTREZID'
 	)
+
+	TSS<-genelist
 
 	genelist$SYMBOL <- geneSymbols$SYMBOL
 
