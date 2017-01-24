@@ -58,7 +58,7 @@ genes.with.TSS.covered<-function(
 
 	geneSymbols <- select(
 		org.Hs.eg.db,
-		keys=as.character(names(TSS)),
+		keys=as.character(names(genelist)),
 		columns=c('SYMBOL'),
 		keytype='ENTREZID'
 	)
