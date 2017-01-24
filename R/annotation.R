@@ -56,10 +56,6 @@ genes.with.TSS.covered<-function(
 	TSS<-.getKnownGeneList(genome.id)
 	#initialise the list to subset later
 
-	#prepare TSS
-	TSS<-genelist
-	#this copy is for overlaps
-
 	geneSymbols <- select(
 		org.Hs.eg.db,
 		keys=as.character(names(TSS)),
