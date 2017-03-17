@@ -20,4 +20,3 @@ prepare intervals (noodles) of the same lenght that adjacently cover a set of ch
 \seealso{
 \code{GRanges}, \code{seqinfo}
 }
-

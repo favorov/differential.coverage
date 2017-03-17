@@ -21,4 +21,3 @@ Returns the choromosome lengths for hg18 as a \code{seqinfo} object.
 \seealso{
 seqinfo
 }
-

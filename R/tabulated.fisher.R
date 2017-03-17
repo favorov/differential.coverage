@@ -16,11 +16,13 @@
 #'MY=0..Y
 #'MN=0..N
 #'then, we map it to 1..(MY+1)(MN+1), and it is the row index
+#'@export
 #'@param Y cases# , e.g. number of cancer samples 
 #'@param N controls#
 #'@param folder (default .) 
 #'@param load (default TRUE) logical. If TRUE, we try to load file tabulated.fisher.Y.N.dat
 #'@param save (default TRUE) logical. If TRUE, we save the \code{tabulated.fisher} to file tabulated.fisher.Y.N.dat
+#'@return the \code{tabulated.fisher} dataframe
 prepare.tabulated.fisher<-function(Y,N,folder='.',load=TRUE,save=TRUE)
 {
 	while ('/'==substr(folder,nchar(folder),nchar(folder)))
@@ -78,11 +80,12 @@ prepare.tabulated.fisher<-function(Y,N,folder='.',load=TRUE,save=TRUE)
 #'calculates the index of the row (each row is a Fisher table)
 #'that represents the Fisher's table among the matrix that tabulate the Fisher table results
 #'
+#'@export
 #'@param Y sum of column 1 (cases#) 
 #'@param N sum of column 2 (controls#)
 #'@param MY methylated cases #
 #'@param MN methylated controls #
-
+#'@return the index of the row
 tab.fisher.row.no<-function(Y,N,MY,MN)
 {
 	(N+1)*MY+MN+1	

@@ -15,8 +15,10 @@ tab.fisher.row.no(Y, N, MY, MN)
 
 \item{MN}{methylated controls #}
 }
+\value{
+the index of the row
+}
 \description{
 calculates the index of the row (each row is a Fisher table)
 that represents the Fisher's table among the matrix that tabulate the Fisher table results
 }
-

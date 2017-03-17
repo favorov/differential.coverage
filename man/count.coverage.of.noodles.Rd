@@ -18,9 +18,8 @@ count.coverage.of.noodles(noodles, bedfilnames, bed.ids = bedfilnames)
 }
 \description{
 It is a central function of all the differential.coverage package. It gets a set of intervals (noodles) as a \code{GRanges} and a list of names of bed files.
-Each bedfile represents a sample. For each noodle and each sample, the the sum of the lenght of intervals (read from the sample's bed file) that intersect with the noodle is returned.
+Each bedfile represents a sample. For each noodle and each sample, the the sum of the lenght of intervals (read from the sample's bed file) that intersect with the noodle is returned. The result is an integer number from [0..length(noodle)] band.
 }
 \seealso{
 \code{differential.coverage}
 }
-

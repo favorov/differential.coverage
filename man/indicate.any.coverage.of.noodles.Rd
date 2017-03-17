@@ -23,4 +23,3 @@ Each bedfile represents a sample. For each noodle and each sample, 0 or 1, which
 \seealso{
 \code{differential.coverage}
 }
-

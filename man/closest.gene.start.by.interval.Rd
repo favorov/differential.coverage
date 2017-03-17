@@ -17,4 +17,3 @@ closest.gene.start.by.interval(noodles, genome.id = "hg19")
 \description{
 Find the closest gene start for each of the given set of intervals
 }
-

@@ -25,4 +25,3 @@ Supposed to called for annotation of a few selected noodles.
 \seealso{
 \code{differential.coverage}
 }
-

@@ -22,4 +22,3 @@ Generates list of genes that start inside a given set of intervals
 \details{
 After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene} for \code{genome.id==hg19} (default), acording to \code{TxDb.Hsapiens.UCSC.hg18.knownGene} for \code{genome.id==hg18} and to \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for \code{genome.id==hg38}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 }
-

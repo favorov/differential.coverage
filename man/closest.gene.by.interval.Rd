@@ -17,4 +17,3 @@ closest.gene.by.interval(noodles, genome.id = "hg19")
 \description{
 Find the closest gene for each of the given set of intervals
 }
-

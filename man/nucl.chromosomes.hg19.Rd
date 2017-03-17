@@ -21,4 +21,3 @@ Returns the choromosome lengths for hg19 as a \code{seqinfo} object.
 \seealso{
 seqinfo
 }
-

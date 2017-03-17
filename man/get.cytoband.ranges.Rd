@@ -15,4 +15,3 @@ Returns \code{GRanges} with cytobands. Actually, takes \code{\link[SNPchip]{getC
 \seealso{
 SNPchip, getCytoband
 }
-

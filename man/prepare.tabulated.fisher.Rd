@@ -17,6 +17,9 @@ prepare.tabulated.fisher(Y, N, folder = ".", load = TRUE, save = TRUE)
 
 \item{save}{(default TRUE) logical. If TRUE, we save the \code{tabulated.fisher} to file tabulated.fisher.Y.N.dat}
 }
+\value{
+the \code{tabulated.fisher} dataframe
+}
 \description{
 forms the dataframe (\code{tabulated.fisher}) with the tabulted results for all possible Fisshe exact tests with Y and N numbers of cases and controls
 }
@@ -32,4 +35,3 @@ MY=0..Y
 MN=0..N
 then, we map it to 1..(MY+1)(MN+1), and it is the row index
 }
-
