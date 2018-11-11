@@ -41,8 +41,8 @@
 #'
 #'@export
 #'@param noodles the \code{GRanges} list of intervals to inflate
-#'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlenght information is to be set as \code{seqlenght} or in \code{seqlenght(noodles)}
-#'@param seqlenght is to provide the chromosome lentth information without including it in noodles
+#'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlengths information is to be set as \code{seqlengths} or in \code{seqlengths(noodles)}
+#'@param seqlengths is to provide the chromosome lentth information without including it in noodles
 #'
 inflate.noodles<-function
 (
@@ -60,11 +60,12 @@ inflate.noodles<-function
 	if (flanks>0) #valudate seqlengths
 	{
 		if(sum(is.na(seqlengths[as.character(seqnames(noodles))]))>0)
-			stop('Inflating noodles, seqlength cannot be undefined here')
+			stop('Inflating noodles, seqlengths cannot be undefined here')
 	}	
 	#inflate noodles
 	start(inflated.noodles)<-pmax(1,start(noodles)-flanks)
-	end(inflated.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
+	end(inflated.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths[as.character(seqnames(noodles))]))
+	inflated.noodles
 }
 
 
@@ -76,7 +77,7 @@ inflate.noodles<-function
 #'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene} for \code{genome.id==hg19} (default), acording to \code{TxDb.Hsapiens.UCSC.hg18.knownGene} for \code{genome.id==hg18} and to \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for \code{genome.id==hg38}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 #'@export
 #'@param noodles the \code{GRanges} list of intervals to look TSS in
-#'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlenght information is to be set in \code{noodles}
+#'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlengths information is to be set in \code{noodles}
 #'@param genome.id the character string with the id of genome we work with, the default is 'hg19', currently, we work with hg38, hg19 or hg18
 #'@return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
 genes.with.TSS.covered<-function(
@@ -89,7 +90,7 @@ genes.with.TSS.covered<-function(
 	genelist<-.getKnownGeneList(genome.id)
 	
 	#inflate noodles
-	inflated.noodles<-inflate.noodles(noodles,flanks,seqlenght(genelist))
+	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 
 	geneSymbols <- select(
 		org.Hs.eg.db,
@@ -188,7 +189,7 @@ genes.intersected<-function(
 
 	#inflate noodles
 	
-	inflated.noodles<-inflate.noodles(noodles,flanks,seqlenght(genelist))
+	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 
 	#initialise the list to subset later
 
@@ -281,7 +282,7 @@ genes.with.TSS.covered.by.interval<-function(
 	TSS<-.getKnownGeneList(genome.id)
 
 	#inflate noodles
-	inflated.noodles<-inflate.noodles(noodles,flanks,seqlenght(genelist))
+	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 	
 	
 	geneSymbols <- select(
@@ -344,7 +345,7 @@ genes.intersected.by.interval<-function(
 	genelist<-.getKnownGeneList(genome.id)
 
 	#inflate noodles
-	inflated.noodles<-inflate.noodles(noodles,flanks,seqlenght(genelist))
+	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 	
 	
 	geneSymbols <- select(

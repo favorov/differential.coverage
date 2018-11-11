@@ -9,7 +9,7 @@ genes.with.TSS.covered(noodles, flanks = 0, genome.id = "hg19")
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
 
-\item{flanks}{lenght to inflate the noddles by before the search; if >0, the seqlenght information is to be set in \code{noodles}}
+\item{flanks}{lenght to inflate the noddles by before the search; if >0, the seqlengths information is to be set in \code{noodles}}
 
 \item{genome.id}{the character string with the id of genome we work with, the default is 'hg19', currently, we work with hg38, hg19 or hg18}
 }
