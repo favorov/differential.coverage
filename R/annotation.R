@@ -35,6 +35,40 @@
 	genelist
 }
 
+#'inflate.noodles
+#'
+#'Expands each element of GRanges by flanks value both sides. Check chomosome boundaries and avoid breaking them (thus differs from \link{resize}). Needs seqlengths for chromosemes to be defined in GRanges or by seqlengths parameter. If both are given, check whether they do not conradict.  
+#'
+#'@export
+#'@param noodles the \code{GRanges} list of intervals to inflate
+#'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlenght information is to be set as \code{seqlenght} or in \code{seqlenght(noodles)}
+#'@param seqlenght is to provide the chromosome lentth information without including it in noodles
+#'
+inflate.noodles<-function
+(
+	noodles, # GRanges with the noodles
+	flanks=0, # how far to inflate 
+	seqlengths=NA #chromosome length, to be subsettable by chomosome name as charater if not NA
+)
+{
+	inflated.noodles<-noodles
+
+	if (is.na(seqlengths)) #we did not provide the lengths explicitely
+	{
+		seqlengths<-seqlengths(noodles)
+	}
+	if (flanks>0) #valudate seqlengths
+	{
+		if(sum(is.na(seqlengths[as.character(seqnames(noodles))]))>0)
+			stop('Inflating noodles, seqlength cannot be undefined here')
+	}	
+	#inflate noodles
+	start(inflated.noodles)<-pmax(1,start(noodles)-flanks)
+	end(inflated.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
+}
+
+
+
 #'genes.with.TSS.covered
 #'
 #'Generates list of genes that start inside a given set of intervals
@@ -43,7 +77,7 @@
 #'@export
 #'@param noodles the \code{GRanges} list of intervals to look TSS in
 #'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlenght information is to be set in \code{noodles}
-#'@param genome.id the character string with the id of genome we work with, the default is 'hg19', currntly, we work with hg19 or hg18
+#'@param genome.id the character string with the id of genome we work with, the default is 'hg19', currently, we work with hg38, hg19 or hg18
 #'@return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
 genes.with.TSS.covered<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
@@ -51,20 +85,11 @@ genes.with.TSS.covered<-function(
 	genome.id='hg19' 
 )
 {
-	knownGenes<-.knownGenes.by.genome.id(genome.id)
-	expanded.noodles<-noodles
-	#inflate DM noodles
-	if(sum(is.na(seqlengths(noodles)[as.character(seqnames(noodles))]))>0)
-		stop('Any seqlength of the GRanges object cannot be undefined here')
-		
-	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
-	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
-	#inflated
-	
 	#prepare genes; we refere the TxDb object by name
 	genelist<-.getKnownGeneList(genome.id)
-	#initialise the list to subset later
-	#the list is a Granges
+	
+	#inflate noodles
+	inflated.noodles<-inflate.noodles(noodles,flanks,seqlenght(genelist))
 
 	geneSymbols <- select(
 		org.Hs.eg.db,
@@ -73,6 +98,8 @@ genes.with.TSS.covered<-function(
 		keytype='ENTREZID'
 	)
 
+	#initialise the list to subset later
+	#the list is a Granges
 	TSS<-genelist
 
 	genelist$SYMBOL <- geneSymbols$SYMBOL
@@ -84,7 +111,7 @@ genes.with.TSS.covered<-function(
 	#TSS prepared
 
 	#make overlap
-	overlaps<-findOverlaps(expanded.noodles,TSS)
+	overlaps<-findOverlaps(inflated.noodles,TSS)
 	message('overlapped')
 
 	noodle.TSS.Gene.Indices<-unique(subjectHits(overlaps))
@@ -155,15 +182,14 @@ genes.intersected<-function(
 	genome.id='hg19' 
 )
 {
-	expanded.noodles<-noodles
-	#inflate DM noodles
-	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
-	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
-	#inflated
-
 	#prepare genes; we refere the TxDb object by name
 
 	genelist<-.getKnownGeneList(genome.id)
+
+	#inflate noodles
+	
+	inflated.noodles<-inflate.noodles(noodles,flanks,seqlenght(genelist))
+
 	#initialise the list to subset later
 
 	geneSymbols <- select(
@@ -177,7 +203,7 @@ genes.intersected<-function(
 
 
 	#make overlap
-	overlaps<-findOverlaps(expanded.noodles,genelist)
+	overlaps<-findOverlaps(inflated.noodles,genelist)
 	message('overlapped')
 
 	noodle.Gene.Indices<-unique(subjectHits(overlaps))
@@ -250,16 +276,14 @@ genes.with.TSS.covered.by.interval<-function(
 	genome.id='hg19' 
 )
 {
-	knownGenes<-.knownGenes.by.genome.id(genome.id)
-	expanded.noodles<-noodles
-	#inflate DM noodles
-	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
-	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
-	#inflated
 	#prepare gene TSS; we refere the TxDb object by name
 
 	TSS<-.getKnownGeneList(genome.id)
 
+	#inflate noodles
+	inflated.noodles<-inflate.noodles(noodles,flanks,seqlenght(genelist))
+	
+	
 	geneSymbols <- select(
 		org.Hs.eg.db,
 		keys=as.character(names(TSS)),
@@ -275,7 +299,7 @@ genes.with.TSS.covered.by.interval<-function(
 	end(TSS)<-tss.start
 	#IAMHERE
 	#make overlap
-	overlapa<-findOverlaps(expanded.noodles,TSS)
+	overlapa<-findOverlaps(inflated.noodles,TSS)
 	message('overlapped')
 	
 	decorated.noodles<-noodles
@@ -316,15 +340,13 @@ genes.intersected.by.interval<-function(
 	genome.id='hg19' 
 )
 {
-	knownGenes<-.knownGenes.by.genome.id(genome.id)
-	expanded.noodles<-noodles
-	#inflate DM noodles
-	start(expanded.noodles)<-pmax(1,start(noodles)-flanks)
-	end(expanded.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths(noodles)[as.character(seqnames(noodles))]))
-	#inflated
 	#prepare gene list; we refere the TxDb object by name
 	genelist<-.getKnownGeneList(genome.id)
 
+	#inflate noodles
+	inflated.noodles<-inflate.noodles(noodles,flanks,seqlenght(genelist))
+	
+	
 	geneSymbols <- select(
 		org.Hs.eg.db,
 		keys=as.character(names(genelist)),
@@ -334,7 +356,7 @@ genes.intersected.by.interval<-function(
 
 	genelist$SYMBOL <- geneSymbols$SYMBOL
 
-	overlapa<-findOverlaps(expanded.noodles,genelist)
+	overlapa<-findOverlaps(inflated.noodles,genelist)
 	message('overlapped')
 	
 	decorated.noodles<-noodles

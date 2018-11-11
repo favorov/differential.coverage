@@ -4,7 +4,8 @@
 \alias{prepare.tabulated.fisher}
 \title{prepare.tabulated.fisher}
 \usage{
-prepare.tabulated.fisher(Y, N, folder = ".", load = TRUE, save = TRUE)
+prepare.tabulated.fisher(Y, N, folder = ".", load = TRUE,
+  save = TRUE)
 }
 \arguments{
 \item{Y}{cases# , e.g. number of cancer samples}

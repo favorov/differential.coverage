@@ -4,7 +4,8 @@
 \alias{indicate.any.coverage.of.noodles}
 \title{indicate.any.coverage.of.noodles}
 \usage{
-indicate.any.coverage.of.noodles(noodles, bedfilnames, bed.ids = bedfilnames)
+indicate.any.coverage.of.noodles(noodles, bedfilnames,
+  bed.ids = bedfilnames)
 }
 \arguments{
 \item{noodles}{\code{GRanges} with the intervals}

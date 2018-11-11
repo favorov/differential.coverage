@@ -34,4 +34,4 @@ biocViews: Annotation, Genetics, Infrastructure, DataRepresentation,
     Bioinformatics
 URL: https://github.com/favorov/differential.coverage
 Packaged: 2017-03-17 07:07:07 EST; favorov; St. Patrick's day
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
