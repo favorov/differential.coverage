@@ -53,7 +53,10 @@ inflate.noodles<-function
 {
 	inflated.noodles<-noodles
 
-	if (is.na(seqlengths)) #we did not provide the lengths explicitely
+	if (sum(is.na(seqlengths))) 
+	#we did not provide the lengths explicitely
+	#sum is to supress warnong is seqlengths is provided as vector
+	#for scalar NA sum is the same as its agrument
 	{
 		seqlengths<-seqlengths(noodles)
 	}
