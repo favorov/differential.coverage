@@ -20,3 +20,4 @@ We start it as a package just to easy install to R.
 0.1.4 - single.strand.genes.only=FALSE in gene() call adds ~4000 more genes
 0.1.5 - closest.gene.start.by.interval modified closest.gene.by.interval added
 0.1.6 - documentation is more roxygenned
+0.1.7 - works with seqlengths from the genome rather that requires the noodles to have correct seqinfo/seqlengths 
