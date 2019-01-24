@@ -18,6 +18,7 @@ Description: Differential Coverage: More or less random collection of
     genes are around, etc.
 License: Artistic-2.0
 LazyLoad: yes
+LazyData: yes
 Depends:
     R (>= 3.1.0),
     IRanges,
