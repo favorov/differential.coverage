@@ -13,7 +13,10 @@ suppressMessages(
 
 rownames(geneSymbols.by.ENTEZId)=geneSymbols.by.ENTEZId[,1]
 
-genes<-genes(TxDb.Hsapiens.UCSC.hg19.knownGene,single.strand.genes.only=FALSE)
+genes<-unlist(genes(TxDb.Hsapiens.UCSC.hg19.knownGene,single.strand.genes.only=FALSE))
+#remove strange threads
+genes<-genes[nchar(as.character(seqnames(genes)))<6]
+
 
 
 
