@@ -11,13 +11,16 @@
 		return('TxDb.Hsapiens.UCSC.hg19.knownGene')
 	if (genome.annotation.id=='hg18'|| genome.annotation.id=='uscs.hg18' || genome.annotation.id=='USCS.hg18')
 		return('TxDb.Hsapiens.UCSC.hg18.knownGene')
-	return NA # i do not know this
+	return (NA) # i do not know this
 }
 
 
-.getKnownGeneList<-function(genome.annotation.id,single.strand.genes.only=TRUE)
+#'this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
+getKnownGeneList<-function(genome.annotation.id='gencode19',single.strand.genes.only=TRUE)
 {
-	#prepare genes; we refere the TxDb object by name
+	if (genome.annotation.id=='gencode19' || genome.annotation.id=='gencode.19' || genome.annotation.id=='gencode.hg.19')
+		return(gencode19_genes) # it was lazy
+	#prepare genes; we refer the TxDb object by name
 	genelist<-unlist(
 		genes(
 			get(.knownGenes.by.genome.id(genome.id)),

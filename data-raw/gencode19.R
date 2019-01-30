@@ -23,4 +23,4 @@ gencode19_genes<-
 gencode19_genes$ensembl<-sapply(strsplit(gencode19_genes$ensembl,'.',fixed = TRUE),"[[",1)
 
 #we are in the package root folder
-use_data(gencode19_genes,overwrite = TRUE)
+usethis::use_data(gencode19_genes,overwrite = TRUE)
