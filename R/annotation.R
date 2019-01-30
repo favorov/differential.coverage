@@ -2,24 +2,20 @@
 #A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014-2019
 #annotation utilities
 
-#get the name of the TxDb object by the genome name
-.knownGenes.by.genome.id<-function(genome.id)
+#get the name of the TxDb object (UCSC annotation) by the genome annotation name
+.USCS.knownGenes.by.genome.annotation.id<-function(genome.annotation.id)
 {
-	if (genome.id=='hg38')
+	if (genome.annotation.id=='hg38' || genome.annotation.id=='uscs.hg38' || genome.annotation.id=='USCS.hg38')
 		return('TxDb.Hsapiens.UCSC.hg38.knownGene')
-	if (genome.id=='hg19')
+	if (genome.annotation.id=='hg19'|| genome.annotation.id=='uscs.hg19' || genome.annotation.id=='USCS.hg19')
 		return('TxDb.Hsapiens.UCSC.hg19.knownGene')
-	if(genome.id=='hg18')
+	if (genome.annotation.id=='hg18'|| genome.annotation.id=='uscs.hg18' || genome.annotation.id=='USCS.hg18')
 		return('TxDb.Hsapiens.UCSC.hg18.knownGene')
-	stop(paste0('I cannot make annotation for genome ',genome.id))
+	return NA # i do not know this
 }
 
-#debug
-#getKnownGeneList<-function(genome.id){
-#	.getKnownGeneList(genome.id)
-#}
 
-.getKnownGeneList<-function(genome.id)
+.getKnownGeneList<-function(genome.annotation.id,single.strand.genes.only=TRUE)
 {
 	#prepare genes; we refere the TxDb object by name
 	genelist<-unlist(
