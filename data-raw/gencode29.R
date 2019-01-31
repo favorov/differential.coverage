@@ -5,7 +5,7 @@ library(usethis)
 
 if(! 'raw_differtial_coverage_gencode_29_gff' %in% ls()){
   raw_differtial_coverage_gencode_29_gff=
-      readGFF("ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gff3.gz",
+      readGFF("http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gff3.gz",
               version=3)
 }
 
@@ -20,7 +20,7 @@ gencode29_genes<-
       select(seqid,start,end,strand,gene_name,ensembl=gene_id),
   seqinfo = seqs)
 #gene_id here is ensembl name, but withe additional .n (transcript#), we remove it
-gencode29_genes$ensembl<-sapply(strsplit(gencode19_genes$ensembl,'.',fixed = TRUE),"[[",1)
+gencode29_genes$ensembl<-sapply(strsplit(gencode29_genes$ensembl,'.',fixed = TRUE),"[[",1)
 
 #we are in the package root folder
 usethis::use_data(gencode29_genes,overwrite = TRUE)
