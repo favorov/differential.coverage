@@ -67,7 +67,7 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 	#genelist$gene_id=names(genelist)
 	#actually, names() is enough
 	#we return GRanges
-	GRanges(ranges = ranges(genelist),seqnames = as.character(seqnames(genelist)),strand=strand(genelist),seqinfo=seqs,gene_id=genelist$gene_id)
+	GRanges(ranges = ranges(genelist),seqnames = as.character(seqnames(genelist)),strand=strand(genelist),seqinfo=seqs,gene_id=genelist$gene_id,gene_name=geneSymbols.by.ENTEZId[genelist$gene_id])
 }
 
 #'inflate.noodles
