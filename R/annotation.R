@@ -16,21 +16,44 @@
 
 
 #'this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
+#'	
+#' seqnames              ranges strand
+#' <Rle>           <IRanges>  <Rle>
+#' 96626     chr2 110656009-110664033      +
+#' 96626     chr2 111222628-111230652      -
+	
 getKnownGeneList<-function(genome.annotation.id='gencode19',single.strand.genes.only=TRUE)
 {
 	if (genome.annotation.id=='gencode19' || genome.annotation.id=='gencode.19' || genome.annotation.id=='gencode.hg.19')
 		return(gencode19_genes) # it was lazy
-	#prepare genes; we refer the TxDb object by name
+	if (genome.annotation.id=='gencode29' || genome.annotation.id=='gencode.29' || genome.annotation.id=='gencode.hg.29')
+		return(gencode29_genes) # it was lazy
+	
+	#prepare genes names; we refer the TxDb object by name
+
+	suppressMessages(
+		geneSymbols.by.ENTEZId <- AnnotationDbi::select(
+		org.Hs.eg.db,
+		keys=keys(org.Hs.eg.db,keytype = 'ENTREZID'),
+		columns=c('SYMBOL'),
+		keytype='ENTREZID'
+		)
+	)
+	rownames(geneSymbols.by.ENTEZId)=geneSymbols.by.ENTEZId[,1]
+
 	genelist<-unlist(
 		genes(
 			get(.knownGenes.by.genome.id(genome.id)),
-			single.strand.genes.only=FALSE
+			single.strand.genes.only=single.strand.genes.only
 		)
 	)
 	#we neeeded gene_id field for each gene
 	#genelist$gene_id=names(genelist)
 	#actually, names() is enough
 	#we return GRanges
+	#remove strange threads
+	genelist<-genelist[nchar(as.character(seqnames(genes)))<6]
+	
 	genelist
 }
 
