@@ -45,7 +45,7 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 
 	genelist<-unlist(
 		genes(
-			get(.knownGenes.by.genome.id(genome.id)),
+			get(.USCS.knownGenes.by.genome.annotation.id(genome.id)),
 			single.strand.genes.only=single.strand.genes.only
 		)
 	)
