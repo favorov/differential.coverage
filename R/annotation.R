@@ -42,13 +42,20 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 		)
 	)
 	rownames(geneSymbols.by.ENTEZId)=geneSymbols.by.ENTEZId[,1]
+	
+	genelist<-NA # to make it function-scope 
 
-	genelist<-unlist(
-		genes(
-			get(.USCS.knownGenes.by.genome.annotation.id(genome.annotation.id)),
-			single.strand.genes.only=single.strand.genes.only
-		)
-	)
+	if (single.strand.genes.only) {
+		genelist<-unlist(genes(
+				get(.USCS.knownGenes.by.genome.annotation.id(genome.annotation.id)),
+				single.strand.genes.only=TRUE
+			))
+	} else {
+		genelist<-genes(
+				get(.USCS.knownGenes.by.genome.annotation.id(genome.annotation.id)),
+				single.strand.genes.only=TRUE
+			)
+	}
 	#we neeeded gene_id field for each gene
 	#genelist$gene_id=names(genelist)
 	#actually, names() is enough
