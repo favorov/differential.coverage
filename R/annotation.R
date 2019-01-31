@@ -56,13 +56,17 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 				single.strand.genes.only=TRUE
 			)
 	}
+	#remove genes on strange chromosomes 
+	genelist<-genelist[nchar(as.character(seqnames(genelist)))<6]
+	#remove strange chromosomes 
+	seqs<-seqinfo(genelist)
+	seqnms<-seqnames(seqs) #all names
+	seqnms<-seqnms[nchar(seqnms)<6] #only real sequence names
+	seqinfo(genelist)<-seqs[seqnms] #seqinfo is subesettable only by names, we make useful chromosome list
 	#we neeeded gene_id field for each gene
 	#genelist$gene_id=names(genelist)
 	#actually, names() is enough
 	#we return GRanges
-	#remove strange threads
-	genelist<-genelist[nchar(as.character(seqnames(genelist)))<6]
-	
 	genelist
 }
 
