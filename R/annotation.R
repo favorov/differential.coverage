@@ -45,10 +45,10 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 	
 	genelist<-NA # to make it function-scope 
 
-	if (single.strand.genes.only) {
+	if (! single.strand.genes.only) {
 		genelist<-unlist(genes(
 				get(.USCS.knownGenes.by.genome.annotation.id(genome.annotation.id)),
-				single.strand.genes.only=TRUE
+				single.strand.genes.only=FALSE
 			))
 	} else {
 		genelist<-genes(
