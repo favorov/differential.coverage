@@ -62,12 +62,12 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 	seqs<-seqinfo(genelist)
 	seqnms<-seqnames(seqs) #all names
 	seqnms<-seqnms[nchar(seqnms)<6] #only real sequence names
-	seqinfo(genelist)<-seqs[seqnms] #seqinfo is subesettable only by names, we make useful chromosome list
+	seqs<-seqs[seqnms] #seqinfo is subesettable only by names, we make useful chromosome list
 	#we neeeded gene_id field for each gene
 	#genelist$gene_id=names(genelist)
 	#actually, names() is enough
 	#we return GRanges
-	genelist
+	GRanges(ranges = ranges(genelist),seqnames = as.character(seqnames(genelist)),strand=strand(genelist),seqinfo=seqs,gene_id=genelist$gene_id)
 }
 
 #'inflate.noodles
