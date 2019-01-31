@@ -61,7 +61,7 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 	#actually, names() is enough
 	#we return GRanges
 	#remove strange threads
-	genelist<-genelist[nchar(as.character(seqnames(genes)))<6]
+	genelist<-genelist[nchar(as.character(seqnames(genelist)))<6]
 	
 	genelist
 }
