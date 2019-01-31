@@ -14,15 +14,17 @@
 	return (NA) # i do not know this
 }
 
-
+#'get.Known.Gene.List
+#'
 #'this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
-#'	
+#'
+#'@export
+#'@param single.strand.genes.only	
 #' seqnames              ranges strand
 #' <Rle>           <IRanges>  <Rle>
 #' 96626     chr2 110656009-110664033      +
 #' 96626     chr2 111222628-111230652      -
-	
-getKnownGeneList<-function(genome.annotation.id='gencode19',single.strand.genes.only=TRUE)
+get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.genes.only=TRUE)
 {
 	if (genome.annotation.id=='gencode19' || genome.annotation.id=='gencode.19' || genome.annotation.id=='gencode.hg.19')
 		return(gencode19_genes) # it was lazy
