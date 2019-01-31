@@ -8,8 +8,7 @@ if(! 'raw_differtial_coverage_gencode_19_gff' %in% ls()){
       readGFF("http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gff3.gz",
               version=3)
 }
-
-  # we use UCSC seqinfo from TxDb.Hsapiens.UCSC.hg19.knownGene
+# we use UCSC seqinfo from TxDb.Hsapiens.UCSC.hg19.knownGene
 seqs<-seqinfo(TxDb.Hsapiens.UCSC.hg19.knownGene)
 seqnms<-seqnames(seqs) #all names
 seqnms<-seqnms[nchar(seqnms)<6] #only real sequence names
