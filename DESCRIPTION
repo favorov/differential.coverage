@@ -4,13 +4,9 @@ Title: Differential Coverage package
 Version: 0.1.7
 Date: 2018-11-11
 Author@R: c(person("Alexander","Favorov",email = "favorov@sensi.org"),person("Elana","J.","Fertig", email="ejfertig@jhmi.edu"),person("Daria","A.",","Gaykalova", email="dgaykal1@jhmi.edu"),person("Joseph","A.","Califano", email="jcalifa@jhmi.edu "),person("Sarah","J.","Wheelan",email = "swheelan@jhmi.edu"))
-Author: Alexander Favorov, Elana J. Fertig, Daria A. Gaykalova, Joseph A.
-    Califano, Sarah J. Wheelan
+Author: Alexander Favorov, Elana J. Fertig, Daria A. Gaykalova, Joseph A.  Califano, Sarah J. Wheelan
 Maintainer: Alexander Favorov <favorov@sensi.org>
-Description: Differential Coverage: More or less random collection of
-    interval-focused tools.  They all are to get bed file collection (e.g.
-    MBD-MACS) and to know which intervals are deferentially covered, which
-    genes are around, etc.
+Description: Differential Coverage: More or less random collection of interval-focused tools.  They all are to get bed file collection (e.g. MBD-MACS) and to know which intervals are deferentially covered, which	genes are around, etc.
 License: Artistic-2.0
 LazyLoad: yes
 LazyData: yes
