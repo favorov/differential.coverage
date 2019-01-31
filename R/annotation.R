@@ -34,14 +34,14 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 	#prepare genes names; we refer the TxDb object by name
 
 	suppressMessages(
-		geneSymbols.by.ENTEZId <- AnnotationDbi::select(
+		geneSymbols.by.ENTREZId <- AnnotationDbi::select(
 		org.Hs.eg.db,
 		keys=keys(org.Hs.eg.db,keytype = 'ENTREZID'),
 		columns=c('SYMBOL'),
 		keytype='ENTREZID'
 		)
 	)
-	rownames(geneSymbols.by.ENTEZId)=geneSymbols.by.ENTEZId[,1]
+	rownames(geneSymbols.by.ENTREZId)=geneSymbols.by.ENTREZId[,1]
 	
 	genelist<-NA # to make it function-scope 
 
@@ -63,11 +63,17 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 	seqnms<-seqnames(seqs) #all names
 	seqnms<-seqnms[nchar(seqnms)<6] #only real sequence names
 	seqs<-seqs[seqnms] #seqinfo is subesettable only by names, we make useful chromosome list
-	#we neeeded gene_id field for each gene
-	#genelist$gene_id=names(genelist)
-	#actually, names() is enough
+	#we neeeded to restore gene_id field for each gene
+	genelist$gene_id=names(genelist)
 	#we return GRanges
-	GRanges(ranges = ranges(genelist),seqnames = as.character(seqnames(genelist)),strand=strand(genelist),seqinfo=seqs,gene_id=genelist$gene_id,gene_name=geneSymbols.by.ENTEZId[genelist$gene_id])
+	GRanges(
+		ranges = ranges(genelist),
+		seqnames = as.character(seqnames(genelist)),strand=strand(genelist),
+		seqinfo=seqs,
+		gene_id=genelist$gene_id,
+		gene_name=geneSymbols.by.ENTREZId[genelist$gene_id,2]
+	)
+
 }
 
 #'inflate.noodles
