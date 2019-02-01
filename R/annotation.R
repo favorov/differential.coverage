@@ -134,24 +134,17 @@ genes.with.TSS.covered<-function(
 	genome.id='gencode19'
 )
 {
-	#prepare genes; we refere the TxDb object by name
-	genelist<-.getKnownGeneList(genome.id)
-	
+	#prepare genelist
+	if(!is.na(genes) && class(genes)=='GRanges') {genelist<-genes} 
+	else{genelist<-get.Known.Gene.List(genome.id)}
+		
 	#inflate noodles
 	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 
-	geneSymbols <- select(
-		org.Hs.eg.db,
-		keys=as.character(names(genelist)),
-		columns=c('SYMBOL'),
-		keytype='ENTREZID'
-	)
 
 	#initialise the list to subset later
 	#the list is a Granges
 	TSS<-genelist
-
-	genelist$SYMBOL <- geneSymbols$SYMBOL
 
 	tss.start<-ifelse(strand(TSS)=='+',start(TSS),end(TSS))
 
@@ -170,7 +163,7 @@ genes.with.TSS.covered<-function(
 	noodle.TSS.Genes<-genelist[noodle.TSS.Gene.Indices]
 	
 
-	noodle.TSS.Genes$SYMBOL<-genelist$SYMBOL[noodle.TSS.Gene.Indices]
+	noodle.TSS.Genes$gene_name<-genelist$gene_name[noodle.TSS.Gene.Indices]
 
 	
 	if ('ishyper' %in% names(elementMetadata(noodles)))
