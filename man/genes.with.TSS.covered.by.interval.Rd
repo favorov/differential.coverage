@@ -12,7 +12,7 @@ genes.with.TSS.covered.by.interval(noodles, flanks = 0,
 
 \item{flanks}{lenght to inflate the noddles by before the search; if >0, the seqlengths information is to be set in \code{noodles}}
 
-\item{genome.id}{is a deprecated alias to genome.annotation.id}
+\item{genome.id}{is genome.annotation.id to call \code{\link{get.Known.Gene.List}}}
 }
 \value{
 \code{GRanges} object, noodles argument with added TSS-overlapped genes for each interval

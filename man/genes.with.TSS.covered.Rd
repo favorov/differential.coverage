@@ -5,7 +5,7 @@
 \title{genes.with.TSS.covered}
 \usage{
 genes.with.TSS.covered(noodles, flanks = 0, genes = NA,
-  genome.id = "hg19")
+  genome.id = "gencode19")
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
@@ -15,7 +15,7 @@ genes.with.TSS.covered(noodles, flanks = 0, genes = NA,
 \item{genes}{it is GRandes oject with the annotation genes. The gene_name matadata field is almost required, it passes the gene name to form output. 
 The default is NA that means that the function will call \code{\link{get.Known.Gene.List}}}
 
-\item{genome.id}{is a deprecated alias to genome.annotation.id}
+\item{genome.id}{is genome.annotation.id to call \code{\link{get.Known.Gene.List}}}
 }
 \value{
 \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter

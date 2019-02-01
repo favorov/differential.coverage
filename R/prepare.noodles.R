@@ -2,14 +2,14 @@
 #A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014-2019
 #prepare noodles
 
-#'prepare.covering.noodles
-#'
-#'prepare intervals (noodles) of the same lenght that adjacently cover a set of chromosomes, which is described by sequinfo
-#'@export
-#'@param noodle.length length of each noodle
-#'@param seq.info is \code{seqinfo} or a vector of ints with the names as chromosome.names
-#'@return \code{GRanges} that contain the covering set of noodles
-#'@seealso \code{GRanges}, \code{seqinfo}
+#' prepare.covering.noodles
+#' 
+#' prepare intervals (noodles) of the same lenght that adjacently cover a set of chromosomes, which is described by sequinfo
+#' @export
+#' @param noodle.length length of each noodle
+#' @param seq.info is \code{seqinfo} or a vector of ints with the names as chromosome.names
+#' @return \code{GRanges} that contain the covering set of noodles
+#' @seealso \code{GRanges}, \code{seqinfo}
 prepare.covering.noodles<-function(seq.info,noodle.length=1000)
 {
 	

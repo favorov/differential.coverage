@@ -11,7 +11,7 @@ genes.intersected(noodles, flanks = 0, genome.id = "hg19")
 
 \item{flanks}{lenght to inflate the noddles by before the search; if >0, the seqlengths information is to be set in \code{noodles}}
 
-\item{genome.id}{is a deprecated alias to genome.annotation.id}
+\item{genome.id}{is genome.annotation.id to call \code{\link{get.Known.Gene.List}}}
 }
 \value{
 \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
