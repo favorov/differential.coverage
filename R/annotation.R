@@ -16,14 +16,17 @@
 
 #'get.Known.Gene.List
 #'
-#'this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
+#'prepare gene list for the annotation functions based on one of standard annotations (see, this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
 #'
 #'@export
-#'@param single.strand.genes.only	
+#'@param genome.annotation.id says what annotation is used to prepare the output 
+#'@param single.strand.genes.only UCSC annotations contain ~500 of genes that exist on both strands, like: 	
 #' seqnames              ranges strand
 #' <Rle>           <IRanges>  <Rle>
 #' 96626     chr2 110656009-110664033      +
 #' 96626     chr2 111222628-111230652      -
+#' the parameter says whether to include them in the lis
+#'@return \code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode prvides its own gene names 
 get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.genes.only=TRUE)
 {
 	if (genome.annotation.id=='gencode19' || genome.annotation.id=='gencode.19' || genome.annotation.id=='gencode.hg.19')

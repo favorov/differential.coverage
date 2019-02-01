@@ -8,11 +8,18 @@ get.Known.Gene.List(genome.annotation.id = "gencode19",
   single.strand.genes.only = TRUE)
 }
 \arguments{
-\item{single.strand.genes.only}{seqnames              ranges strand
+\item{genome.annotation.id}{says what annotation is used to prepare the output}
+
+\item{single.strand.genes.only}{UCSC annotations contain ~500 of genes that exist on both strands, like:
+seqnames              ranges strand
 <Rle>           <IRanges>  <Rle>
 96626     chr2 110656009-110664033      +
-96626     chr2 111222628-111230652      -}
+96626     chr2 111222628-111230652      -
+the parameter says whether to include them in the lis}
+}
+\value{
+\code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode prvides its own gene names
 }
 \description{
-this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
+prepare gene list for the annotation functions based on one of standard annotations (see, this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
 }
