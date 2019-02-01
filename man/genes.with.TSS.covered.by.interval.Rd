@@ -4,13 +4,16 @@
 \alias{genes.with.TSS.covered.by.interval}
 \title{genes.with.TSS.covered.by.interval}
 \usage{
-genes.with.TSS.covered.by.interval(noodles, flanks = 0,
-  genome.id = "hg19")
+genes.with.TSS.covered.by.interval(noodles, flanks = 0, genes = NA,
+  genome.id = "gencode19")
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
 
 \item{flanks}{lenght to inflate the noddles by before the search; if >0, the seqlengths information is to be set in \code{noodles}}
+
+\item{genes}{it is GRandes oject with the annotation genes. The gene_name matadata field is almost required, it passes the gene name to form output. 
+The default is NA that means that the function will call \code{\link{get.Known.Gene.List}}}
 
 \item{genome.id}{is genome.annotation.id to call \code{\link{get.Known.Gene.List}}}
 }
@@ -21,6 +24,5 @@ genes.with.TSS.covered.by.interval(noodles, flanks = 0,
 Generates a list of genes (possibly, empty) that start inside each interval
 }
 \details{
-After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19', TxDb.Hsapiens.UCSC.hg18.knownGene for hg18 or TxDb.Hsapiens.UCSC.hg38.knownGene for hg38). 
-If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
+After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
 }

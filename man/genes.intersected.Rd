@@ -4,12 +4,16 @@
 \alias{genes.intersected}
 \title{genes.intersected}
 \usage{
-genes.intersected(noodles, flanks = 0, genome.id = "hg19")
+genes.intersected(noodles, flanks = 0, genes = NA,
+  genome.id = "gencode19")
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
 
 \item{flanks}{lenght to inflate the noddles by before the search; if >0, the seqlengths information is to be set in \code{noodles}}
+
+\item{genes}{it is GRandes oject with the annotation genes. The gene_name matadata field is almost required, it passes the gene name to form output. 
+The default is NA that means that the function will call \code{\link{get.Known.Gene.List}}}
 
 \item{genome.id}{is genome.annotation.id to call \code{\link{get.Known.Gene.List}}}
 }
@@ -20,5 +24,5 @@ genes.intersected(noodles, flanks = 0, genome.id = "hg19")
 Generates list of genes that intersect a given set of intervals
 }
 \details{
-After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the genes that intersect the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene} for \code{genome.id==hg19} (default), acording to \code{TxDb.Hsapiens.UCSC.hg18.knownGene} for \code{genome.id==hg18} and to \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for \code{genome.id==hg38}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
+After the noodles (the set of intervals to search intersection with) are inflated by flanks, we look for all the genes that intersect the (inflated) intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 }

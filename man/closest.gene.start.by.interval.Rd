@@ -4,10 +4,14 @@
 \alias{closest.gene.start.by.interval}
 \title{closest.gene.start.by.interval}
 \usage{
-closest.gene.start.by.interval(noodles, genome.id = "hg19")
+closest.gene.start.by.interval(noodles, genes = NA,
+  genome.id = "gencode19")
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
+
+\item{genes}{it is GRandes oject with the annotation genes. The gene_name matadata field is almost required, it passes the gene name to form output. 
+The default is NA that means that the function will call \code{\link{get.Known.Gene.List}}}
 
 \item{genome.id}{is genome.annotation.id to call \code{\link{get.Known.Gene.List}}}
 }
@@ -15,5 +19,5 @@ closest.gene.start.by.interval(noodles, genome.id = "hg19")
 \code{GRanges} object, noodles argument with added closest gene info for each interval
 }
 \description{
-Find the closest gene start for each of the given set of intervals
+Find the closest gene start for each of the given set of intervals.  Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}.
 }

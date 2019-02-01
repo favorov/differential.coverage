@@ -117,7 +117,7 @@ inflate.noodles<-function
 #' 
 #' Generates list of genes that start inside a given set of intervals
 #' 
-#' After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene} for \code{genome.id==hg19} (default), acording to \code{TxDb.Hsapiens.UCSC.hg18.knownGene} for \code{genome.id==hg18} and to \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for \code{genome.id==hg38}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
+#' After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated) intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 #' 
 #' @export
 #' 
@@ -163,9 +163,6 @@ genes.with.TSS.covered<-function(
 	noodle.TSS.Genes<-genelist[noodle.TSS.Gene.Indices]
 	
 
-	noodle.TSS.Genes$gene_name<-genelist$gene_name[noodle.TSS.Gene.Indices]
-
-	
 	if ('ishyper' %in% names(elementMetadata(noodles)))
 	{
 		ishyper<- tapply(noodles[queryHits(overlaps)]$ishyper,subjectHits(overlaps),
@@ -214,35 +211,23 @@ genes.with.TSS.covered<-function(
 #' 
 #' Generates list of genes that intersect a given set of intervals
 #' 
-#' After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the genes that intersect the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene} for \code{genome.id==hg19} (default), acording to \code{TxDb.Hsapiens.UCSC.hg18.knownGene} for \code{genome.id==hg18} and to \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for \code{genome.id==hg38}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
+#' After the noodles (the set of intervals to search intersection with) are inflated by flanks, we look for all the genes that intersect the (inflated) intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
 genes.intersected<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
 	flanks=0, #how far to shrink
-	genome.id='hg19' 
+	genes=NA,
+	genome.id='gencode19'
 )
 {
-	#prepare genes; we refere the TxDb object by name
-
-	genelist<-.getKnownGeneList(genome.id)
-
-	#inflate noodles
+	#prepare genelist
+	if(!is.na(genes) && class(genes)=='GRanges') {genelist<-genes} 
+	else{genelist<-get.Known.Gene.List(genome.id)}
 	
+	#inflate noodles
 	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
-
-	#initialise the list to subset later
-
-	geneSymbols <- select(
-		org.Hs.eg.db,
-		keys=as.character(names(genelist)),
-		columns=c('SYMBOL'),
-		keytype='ENTREZID'
-	)
-
-	genelist$SYMBOL <- geneSymbols$SYMBOL
-
 
 	#make overlap
 	overlaps<-findOverlaps(inflated.noodles,genelist)
@@ -253,10 +238,6 @@ genes.intersected<-function(
 	#maybe, some of them are hit with more than one
 
 	noodle.Genes<-genelist[noodle.Gene.Indices]
-	
-
-	noodle.Genes$SYMBOL<-genelist$SYMBOL[noodle.Gene.Indices]
-
 	
 	if ('ishyper' %in% names(elementMetadata(noodles)))
 	{
@@ -307,34 +288,28 @@ genes.intersected<-function(
 #' 
 #' Generates a list of genes (possibly, empty) that start inside each interval
 #' 
-#' After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19', TxDb.Hsapiens.UCSC.hg18.knownGene for hg18 or TxDb.Hsapiens.UCSC.hg38.knownGene for hg38). 
-#' If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
+#' After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added TSS-overlapped genes for each interval  
 genes.with.TSS.covered.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	flanks=0, #how far to shrink 
-	genome.id='hg19' 
+	genes=NA,
+	genome.id='gencode19'
 )
 {
-	#prepare gene TSS; we refere the TxDb object by name
-
-	TSS<-.getKnownGeneList(genome.id)
-
+	#prepare genelist
+	if(!is.na(genes) && class(genes)=='GRanges') {genelist<-genes} 
+	else{genelist<-get.Known.Gene.List(genome.id)}
+		
 	#inflate noodles
 	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 	
+	#initialise the list to subset later
+	#the list is a Granges
+	TSS<-genelist
 	
-	geneSymbols <- select(
-		org.Hs.eg.db,
-		keys=as.character(names(TSS)),
-		columns=c('SYMBOL'),
-		keytype='ENTREZID'
-	)
-
-	TSS$SYMBOL <- geneSymbols$SYMBOL
-
 	tss.start<-ifelse(strand(TSS)=='+',start(TSS),end(TSS))
 
 	start(TSS)<-tss.start
@@ -348,7 +323,7 @@ genes.with.TSS.covered.by.interval<-function(
 
 	#overlapped.TSS
 
-	overlapped.TSS<-tapply(TSS$SYMBOL[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	overlapped.TSS<-tapply(TSS$gene_name[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
 	decorated.noodles$overlapped.TSS=overlapped.TSS[as.character(1:length(decorated.noodles))]
 	#we need this addressing scheme ([as.character(1:length(decorated.noodles))]) because names(overlapped.TSS)
 	#are the indices of noodles that have overlapped TSS. Those that have not are not represented in overlapped.TSS
@@ -371,33 +346,25 @@ genes.with.TSS.covered.by.interval<-function(
 #' 
 #' Generates a list of genes (possibly, empty) that intersects with each interval
 #' 
-#' After the noodles (the set of intervals to search intersections with) are inflated by flanks, we look for all the genes that overlap with the (inflated)  intervals according to \code{TxDb} object we use (TxDb.Hsapiens.UCSC.hg19.knownGene for genome.id=='hg19', TxDb.Hsapiens.UCSC.hg18.knownGene for hg18 or TxDb.Hsapiens.UCSC.hg38.knownGene for hg38). 
-#' If a noodle (interval) overlaps more that one gene, we form a text list of the genes.
+#' After the noodles (the set of intervals to search intersections with) are inflated by flanks, we look for all the genes that overlap with the (inflated) intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If a noodle (interval) overlaps more that one gene, we form a text list of the genes.
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added gene-overlapped genes for each interval  
 genes.intersected.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	flanks=0, #how far to shrink 
-	genome.id='hg19' 
+	genes=NA,
+	genome.id='gencode19'
 )
 {
-	#prepare gene list; we refere the TxDb object by name
-	genelist<-.getKnownGeneList(genome.id)
-
+	#prepare genelist
+	if(!is.na(genes) && class(genes)=='GRanges') {genelist<-genes} 
+	else{genelist<-get.Known.Gene.List(genome.id)}
+		
 	#inflate noodles
 	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 	
 	
-	geneSymbols <- select(
-		org.Hs.eg.db,
-		keys=as.character(names(genelist)),
-		columns=c('SYMBOL'),
-		keytype='ENTREZID'
-	)
-
-	genelist$SYMBOL <- geneSymbols$SYMBOL
-
 	overlapa<-findOverlaps(inflated.noodles,genelist)
 	message('overlapped')
 	
@@ -405,7 +372,7 @@ genes.intersected.by.interval<-function(
 
 	#overlapped.genes
 
-	overlapped.genes<-tapply(genelist$SYMBOL[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	overlapped.genes<-tapply(genelist$gene_name[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
 	decorated.noodles$overlapped.genes=overlapped.genes[as.character(1:length(decorated.noodles))]
 	#we need this addressing scheme ([as.character(1:length(decorated.noodles))]) because names(overlapped.TSS)
 	#are the indices of noodles that have overlapped TSS. Those that have not are not represented in overlapped.TSS
@@ -426,33 +393,23 @@ genes.intersected.by.interval<-function(
 
 #' closest.gene.by.interval
 #' 
-#' Find the closest gene for each of the given set of intervals
+#' Find the closest gene for each of the given set of intervals.  Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. 
 #' 
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added closest gene info for each interval  
 closest.gene.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
-	genome.id='hg19' 
+	genes=NA,
+	genome.id='gencode19'
 )
 {
-	knownGenes<-.knownGenes.by.genome.id(genome.id)
+	#prepare genelist
+	if(!is.na(genes) && class(genes)=='GRanges') {genelist<-genes} 
+	else{genelist<-get.Known.Gene.List(genome.id)}
+		
 	message('closest')
 
-	#prepare gene TSS; we refere the TxDb object by name
-	genelist<-.getKnownGeneList(genome.id)
-
-	geneSymbols <- select(
-		org.Hs.eg.db,
-		keys=as.character(names(genelist)),
-		columns=c('SYMBOL'),
-		keytype='ENTREZID'
-	)
-
-	genelist$SYMBOL <- geneSymbols$SYMBOL
-
-	#now, TSS contains the gene start
-  
 	near.gene<-nearest(noodles,genelist)
 
 	#some nearest contatain NA
@@ -476,7 +433,7 @@ closest.gene.by.interval<-function(
 		dist=integer(length(noodles))
 	)
 
-	noodles.decoration$closest.gene[is.a.near.gene]<-genelist$SYMBOL[near.gene]
+	noodles.decoration$closest.gene[is.a.near.gene]<-genelist$gene_name[near.gene]
 	noodles.decoration$start[is.a.near.gene]<-start(genelist)[near.gene]
 	noodles.decoration$end[is.a.near.gene]<-end(genelist)[near.gene]
 	noodles.decoration$strand[is.a.near.gene]<-
@@ -497,30 +454,24 @@ closest.gene.by.interval<-function(
 
 #' closest.gene.start.by.interval
 #' 
-#' Find the closest gene start for each of the given set of intervals
+#' Find the closest gene start for each of the given set of intervals.  Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. 
 #' 
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added closest gene info for each interval  
 closest.gene.start.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
-	genome.id='hg19' 
+	genes=NA,
+	genome.id='gencode19'
 )
 {
-	knownGenes<-.knownGenes.by.genome.id(genome.id)
+	#prepare genelist (we call it TSS here)
+	if(!is.na(genes) && class(genes)=='GRanges') {TSS<-genes} 
+	else{TSS<-get.Known.Gene.List(genome.id)}
+	
 	message('closest')
 
 	#prepare gene TSS; we refere the TxDb object by name
-	TSS<-.getKnownGeneList(genome.id)
-
-	geneSymbols <- select(
-		org.Hs.eg.db,
-		keys=as.character(names(TSS)),
-		columns=c('SYMBOL'),
-		keytype='ENTREZID'
-	)
-
-	TSS$SYMBOL <- geneSymbols$SYMBOL
 
 	tss.start<-ifelse(strand(TSS)=='+',start(TSS),end(TSS))
 
@@ -557,7 +508,7 @@ closest.gene.start.by.interval<-function(
 		dist=integer(length(noodles))
 	)
 
-	noodles.decoration$closest.TSS[is.a.near.TSS]<-TSS$SYMBOL[near.TSS]
+	noodles.decoration$closest.TSS[is.a.near.TSS]<-TSS$gene_name[near.TSS]
 	noodles.decoration$pos[is.a.near.TSS]<-start(TSS)[near.TSS]
 	noodles.decoration$dir[is.a.near.TSS]<-as.character(strand(TSS)[near.TSS])
 	noodles.decoration$dist[is.a.near.TSS]<-dist.TSS
