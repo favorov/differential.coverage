@@ -19,15 +19,10 @@
 #'prepare gene list for the annotation functions based on one of standard annotations (see, this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
 #'
 #'@export
-#'@param genome.annotation.id says what annotation is used to prepare the output 
-#'@param single.strand.genes.only UCSC annotations contain ~500 of genes that exist on both strands, like: 	
-#' seqnames              ranges strand
-#' <Rle>           <IRanges>  <Rle>
-#' 96626     chr2 110656009-110664033      +
-#' 96626     chr2 111222628-111230652      -
-#' the parameter says whether to include them in the lis
-#'@return \code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode prvides its own gene names 
-get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.genes.only=TRUE)
+#'@param genome.annotation.id says what annotation is used to prepare the output. \code{gencode19} (default) and \code{gencode26} load genes for gencode stable annotations (19 and 26) for human genome 19 and 38 version. \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly. 
+#'@param single.strand.genes.only UCSC annotations contain ~500 pair of same-named genes that exist on both strands.The parameter says whether to exclude them from the gene list to be returned. The default is \code{FALSE} that allows these genes to be included.
+#'@return \code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode provides its own gene names 
+get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.genes.only=FALSE)
 {
 	if (genome.annotation.id=='gencode19' || genome.annotation.id=='gencode.19' || genome.annotation.id=='gencode.hg.19')
 		return(gencode19_genes) # it was lazy
@@ -123,13 +118,17 @@ inflate.noodles<-function
 #'
 #'After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals according to \code{TxDb.Hsapiens.UCSC.hg19.knownGene} for \code{genome.id==hg19} (default), acording to \code{TxDb.Hsapiens.UCSC.hg18.knownGene} for \code{genome.id==hg18} and to \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for \code{genome.id==hg38}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 #'@export
+#'@inheritParams get.Known.Gene.List
 #'@param noodles the \code{GRanges} list of intervals to look TSS in
 #'@param flanks lenght to inflate the noddles by before the search; if >0, the seqlengths information is to be set in \code{noodles}
-#'@param genome.id the character string with the id of genome we work with, the default is 'hg19', currently, we work with hg38, hg19 or hg18
+#'@param genes it is GRandes oject with the annotation genes. The gene_name matadata field is almost required, it passes the gene name to form output. 
+#'The default is NA that means that the function will call \code{\link{get.Known.Gene.List}} 
+#'@param genome.id is a deprecated alias to genome.annotation.id 
 #'@return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
 genes.with.TSS.covered<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
 	flanks=0, #how far to shrink
+	genes=NA,
 	genome.id='hg19' 
 )
 {

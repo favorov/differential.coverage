@@ -5,20 +5,15 @@
 \title{get.Known.Gene.List}
 \usage{
 get.Known.Gene.List(genome.annotation.id = "gencode19",
-  single.strand.genes.only = TRUE)
+  single.strand.genes.only = FALSE)
 }
 \arguments{
-\item{genome.annotation.id}{says what annotation is used to prepare the output}
+\item{genome.annotation.id}{says what annotation is used to prepare the output. \code{gencode19} (default) and \code{gencode26} load genes for gencode stable annotations (19 and 26) for human genome 19 and 38 version. \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly.}
 
-\item{single.strand.genes.only}{UCSC annotations contain ~500 of genes that exist on both strands, like:
-seqnames              ranges strand
-<Rle>           <IRanges>  <Rle>
-96626     chr2 110656009-110664033      +
-96626     chr2 111222628-111230652      -
-the parameter says whether to include them in the lis}
+\item{single.strand.genes.only}{UCSC annotations contain ~500 pair of same-named genes that exist on both strands.The parameter says whether to exclude them from the gene list to be returned. The default is \code{FALSE} that allows these genes to be included.}
 }
 \value{
-\code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode prvides its own gene names
+\code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode provides its own gene names
 }
 \description{
 prepare gene list for the annotation functions based on one of standard annotations (see, this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data

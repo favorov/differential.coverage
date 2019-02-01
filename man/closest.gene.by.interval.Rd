@@ -9,7 +9,7 @@ closest.gene.by.interval(noodles, genome.id = "hg19")
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
 
-\item{genome.id}{the character string with the id of genome we work with, the default is 'hg19', currently, we work with hg38, hg19 or hg18}
+\item{genome.id}{is a deprecated alias to genome.annotation.id}
 }
 \value{
 \code{GRanges} object, noodles argument with added closest gene info for each interval
