@@ -27,6 +27,7 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 	if (genome.annotation.id=='gencode19' || genome.annotation.id=='gencode.19' || genome.annotation.id=='gencode.hg.19')
 		return(gencode19_genes) # it was lazy
 	if (genome.annotation.id=='gencode26' || genome.annotation.id=='gencode.26' || genome.annotation.id=='gencode.hg.26')
+		return(gencode26_genes) # it was lazy
 	if (genome.annotation.id=='gencode29' || genome.annotation.id=='gencode.29' || genome.annotation.id=='gencode.hg.29')
 		return(gencode29_genes) # it was lazy
 	
