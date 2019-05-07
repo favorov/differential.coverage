@@ -21,3 +21,5 @@ We start it as a package just to easy install to R.
 0.1.5 - closest.gene.start.by.interval modified closest.gene.by.interval added
 0.1.6 - documentation is more roxygenned
 0.1.7 - works with seqlengths from the genome rather that requires the noodles to have correct seqinfo/seqlengths 
+0.1.8 - works with gencode and ucsc genome annotations
+0.1.9 - added ignore.strand=TRUE to the nearest() calls; now, we have genes from both strands

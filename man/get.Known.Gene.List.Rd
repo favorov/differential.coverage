@@ -8,7 +8,7 @@ get.Known.Gene.List(genome.annotation.id = "gencode19",
   single.strand.genes.only = FALSE)
 }
 \arguments{
-\item{genome.annotation.id}{says what annotation is used to prepare the output. \code{gencode19} (default) and \code{gencode26} load genes for gencode stable annotations (19 and 26) for human genome 19 and 38 version. \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly.}
+\item{genome.annotation.id}{says what annotation is used to prepare the output. \code{gencode19} (default), \code{gencode29} and \code{gencode26} load genes for gencode stable annotations (19 and 29) and for 26 (gencode 19 is for human genome 19, gencode 26 and 29 are for 38 version). \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly.}
 
 \item{single.strand.genes.only}{UCSC annotations contain ~500 pair of same-named genes that exist on both strands.The parameter says whether to exclude them from the gene list to be returned. The default is \code{FALSE} that allows these genes to be included.}
 }

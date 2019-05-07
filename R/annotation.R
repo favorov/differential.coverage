@@ -412,7 +412,7 @@ closest.gene.by.interval<-function(
 		
 	message('closest')
 
-	near.gene<-nearest(noodles,genelist)
+	near.gene<-nearest(noodles,genelist,ignore.strand=TRUE)
 
 	#some nearest contatain NA
 	#we just remove them from result
@@ -482,7 +482,7 @@ closest.gene.start.by.interval<-function(
 
 	#now, TSS contains the gene start
   
-	near.TSS<-nearest(noodles,TSS)
+	near.TSS<-nearest(noodles,TSS.ignore.strand=TRUE)
 
 	#some nearest contatain NA
 	#we just remove them from result
@@ -515,8 +515,6 @@ closest.gene.start.by.interval<-function(
 	noodles.decoration$dir[is.a.near.TSS]<-as.character(strand(TSS)[near.TSS])
 	noodles.decoration$dist[is.a.near.TSS]<-dist.TSS
 	
-	noodles.decoration[!is.a.near.TSS,]=NA
-
 	decorated.noodles<-noodles
 
 	mcols(decorated.noodles)<-noodles.decoration
