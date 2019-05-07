@@ -482,7 +482,7 @@ closest.gene.start.by.interval<-function(
 
 	#now, TSS contains the gene start
   
-	near.TSS<-nearest(noodles,TSS.ignore.strand=TRUE)
+	near.TSS<-nearest(noodles,TSS,ignore.strand=TRUE)
 
 	#some nearest contatain NA
 	#we just remove them from result
