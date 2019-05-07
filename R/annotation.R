@@ -425,7 +425,7 @@ closest.gene.by.interval<-function(
 	near.gene<-near.gene[is.a.near.gene]
 	#near.gene now are all the non-NA values
 
-	dist.gene<-distance(noodles.nna,genelist[near.gene])
+	dist.gene<-distance(noodles.nna,genelist[near.gene],ignore.strand=TRUE)
 
 	noodles.decoration<-DataFrame(
 		closest.gene=character(length(noodles)),
@@ -495,10 +495,10 @@ closest.gene.start.by.interval<-function(
 	near.TSS<-near.TSS[is.a.near.TSS]
 	#near.TSS now are all the non-NA values
 
-	dist.TSS<-distance(noodles.nna,TSS[near.TSS])
+	dist.TSS<-distance(noodles.nna,TSS[near.TSS],ignore.strand=TRUE)
 
 
-	dist.TSS<-ifelse(strand(TSS)[near.TSS]=='+',
+	dist.TSS<-ifelse(as.character(strand(TSS)[near.TSS])=='+',
 			ifelse(start(noodles.nna)>start(TSS)[near.TSS],dist.TSS,-dist.TSS),
 			ifelse(start(noodles.nna)>start(TSS)[near.TSS],-dist.TSS,dist.TSS)
 	)
