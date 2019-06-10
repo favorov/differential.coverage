@@ -338,9 +338,9 @@ genes.with.TSS.covered.by.interval<-function(
 	ovrl.dir<-tapply(as.character(strand(TSS))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
 	decorated.noodles$ovrl.dir=ovrl.dir[as.character(1:length(decorated.noodles))]
 	
-	if ("ensemble" %in% colnames(mcols(TSS))) {
-	  overlapped.TSS.ensemble<-tapply(TSS$ensemble[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	  decorated.noodles$overlapped.TSS.ensemble=overlapped.TSS[as.character(1:length(decorated.noodles))]
+	if ("ensembl" %in% colnames(mcols(TSS))) {
+	  overlapped.TSS.ensembl<-tapply(TSS$ensembl[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.TSS.ensembl=overlapped.TSS[as.character(1:length(decorated.noodles))]
 	}
 	
 	if ("gene_id" %in% colnames(mcols(TSS))) {
@@ -397,9 +397,9 @@ genes.intersected.by.interval<-function(
 	ovrl.dir<-tapply(as.character(strand(genelist))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
 	decorated.noodles$ovrl.dir=ovrl.dir[as.character(1:length(decorated.noodles))]
 
-	if ("ensemble" %in% colnames(mcols(genelist))) {
-	  overlapped.genelist.ensemble<-tapply(genelist$ensemble[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	  decorated.noodles$overlapped.genelist.ensemble=overlapped.genelist[as.character(1:length(decorated.noodles))]
+	if ("ensembl" %in% colnames(mcols(genelist))) {
+	  overlapped.genelist.ensembl<-tapply(genelist$ensembl[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.genelist.ensembl=overlapped.genelist[as.character(1:length(decorated.noodles))]
 	}
 	
 	if ("gene_id" %in% colnames(mcols(genelist))) {
@@ -463,8 +463,8 @@ closest.gene.by.interval<-function(
 	noodles.decoration$dist[is.a.near.gene]<-dist.gene
 
 
-	if ("ensemble" %in% colnames(mcols(genelist))) {
-		noodles.decoration$ensemble[is.a.near.gene]<-genelist$ensemble[near.gene]
+	if ("ensembl" %in% colnames(mcols(genelist))) {
+		noodles.decoration$ensembl[is.a.near.gene]<-genelist$ensembl[near.gene]
 	}
 	
 	if ("gene_id" %in% colnames(mcols(genelist))) {
@@ -547,13 +547,13 @@ closest.gene.start.by.interval<-function(
 	qqTSS<<-TSS
 	
 	message("choice")	
-	if ("ensemble" %in% colnames(mcols(TSS))) {
+	if ("ensembl" %in% colnames(mcols(TSS))) {
 	  message("adding ensemle")
-	  noodles.decoration$ensemble[is.a.near.gene]<-TSS$ensemble[near.gene]
+	  noodles.decoration$ensembl[is.a.near.gene]<-TSS$ensembl[near.TSS]
 	}
 	
 	if ("gene_id" %in% colnames(mcols(TSS))) {
-		noodles.decoration$gene_id[is.a.near.gene]<-TSS$gene_id[near.gene]
+		noodles.decoration$gene_id[is.a.near.gene]<-TSS$gene_id[near.TSS]
 	}
 	
 	noodles.decoration[!is.a.near.TSS,]=NA
