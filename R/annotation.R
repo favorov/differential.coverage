@@ -42,7 +42,6 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 		)
 	)
 
-
 	rownames(geneSymbols.by.ENTREZId)=geneSymbols.by.ENTREZId[,1]
 
 	genelist<-NA # to make it function-scope 
@@ -73,7 +72,7 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 		seqnames = as.character(seqnames(genelist)),strand=strand(genelist),
 		seqinfo=seqs,
 		gene_id=genelist$gene_id,
-		gene_name=geneSymbols.by.ENTREZId[genelist$gene_id,2],
+		gene_name=geneSymbols.by.ENTREZId[genelist$gene_id,2]
 	)
 
 }
@@ -338,7 +337,17 @@ genes.with.TSS.covered.by.interval<-function(
 
 	ovrl.dir<-tapply(as.character(strand(TSS))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
 	decorated.noodles$ovrl.dir=ovrl.dir[as.character(1:length(decorated.noodles))]
-
+	
+	if ("ensemble" %in% colnames(mcols(TSS))) {
+	  overlapped.TSS.ensemble<-tapply(TSS$ensemble[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.TSS.ensemble=overlapped.TSS[as.character(1:length(decorated.noodles))]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(TSS))) {
+	  overlapped.TSS.gene_id<-tapply(TSS$gene_id[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.TSS.gene_id=overlapped.TSS[as.character(1:length(decorated.noodles))]
+	}
+	
 	message('mapped')
 
 	decorated.noodles
@@ -388,6 +397,15 @@ genes.intersected.by.interval<-function(
 	ovrl.dir<-tapply(as.character(strand(genelist))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
 	decorated.noodles$ovrl.dir=ovrl.dir[as.character(1:length(decorated.noodles))]
 
+	if ("ensemble" %in% colnames(mcols(genelist))) {
+	  overlapped.genelist.ensemble<-tapply(genelist$ensemble[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.genelist.ensemble=overlapped.genelist[as.character(1:length(decorated.noodles))]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(genelist))) {
+	  overlapped.genelist.gene_id<-tapply(genelist$gene_id[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.genelist.gene_id=overlapped.genelist[as.character(1:length(decorated.noodles))]
+	}
 	message('mapped')
 
 	decorated.noodles
@@ -443,6 +461,14 @@ closest.gene.by.interval<-function(
 	noodles.decoration$strand[is.a.near.gene]<-
 		as.character(strand(genelist)[near.gene])
 	noodles.decoration$dist[is.a.near.gene]<-dist.gene
+	
+	if ("ensemble" %in% colnames(mcols(genelist))) {
+		noodles.decoration$ensemble[is.a.near.gene]<-genelist$ensemble[near.gene]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(genelist))) {
+		noodles.decoration$gene_id[is.a.near.gene]<-genelist$gene_id[near.gene]
+	}
 	
 	noodles.decoration[!is.a.near.gene,]=NA
 
@@ -516,6 +542,14 @@ closest.gene.start.by.interval<-function(
 	noodles.decoration$pos[is.a.near.TSS]<-start(TSS)[near.TSS]
 	noodles.decoration$dir[is.a.near.TSS]<-as.character(strand(TSS)[near.TSS])
 	noodles.decoration$dist[is.a.near.TSS]<-dist.TSS
+	
+	if ("ensemble" %in% colnames(mcols(TSS))) {
+		noodles.decoration$ensemble[is.a.near.gene]<-TSS$ensemble[near.gene]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(TSS))) {
+		noodles.decoration$gene_id[is.a.near.gene]<-TSS$gene_id[near.gene]
+	}
 	
 	noodles.decoration[!is.a.near.TSS,]=NA
 
