@@ -37,14 +37,14 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 		geneSymbols.by.ENTREZId <- AnnotationDbi::select(
 		org.Hs.eg.db,
 		keys=keys(org.Hs.eg.db,keytype = 'ENTREZID'),
-		columns=c('SYMBOL','ENSEMBL'),
+		columns=c('SYMBOL'),
 		keytype='ENTREZID'
 		)
 	)
-	
-	
+
+
 	rownames(geneSymbols.by.ENTREZId)=geneSymbols.by.ENTREZId[,1]
-	
+
 	genelist<-NA # to make it function-scope 
 
 	if (! single.strand.genes.only) {
@@ -74,7 +74,6 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 		seqinfo=seqs,
 		gene_id=genelist$gene_id,
 		gene_name=geneSymbols.by.ENTREZId[genelist$gene_id,2],
-		ensembl=geneSymbols.by.ENTREZId[genelist$gene_id,3]
 	)
 
 }
