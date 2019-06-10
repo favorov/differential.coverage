@@ -461,7 +461,8 @@ closest.gene.by.interval<-function(
 	noodles.decoration$strand[is.a.near.gene]<-
 		as.character(strand(genelist)[near.gene])
 	noodles.decoration$dist[is.a.near.gene]<-dist.gene
-	
+
+
 	if ("ensemble" %in% colnames(mcols(genelist))) {
 		noodles.decoration$ensemble[is.a.near.gene]<-genelist$ensemble[near.gene]
 	}
@@ -542,9 +543,13 @@ closest.gene.start.by.interval<-function(
 	noodles.decoration$pos[is.a.near.TSS]<-start(TSS)[near.TSS]
 	noodles.decoration$dir[is.a.near.TSS]<-as.character(strand(TSS)[near.TSS])
 	noodles.decoration$dist[is.a.near.TSS]<-dist.TSS
+
+	qqTSS<<-TSS
 	
+	message("choice")	
 	if ("ensemble" %in% colnames(mcols(TSS))) {
-		noodles.decoration$ensemble[is.a.near.gene]<-TSS$ensemble[near.gene]
+	  message("adding ensemle")
+	  noodles.decoration$ensemble[is.a.near.gene]<-TSS$ensemble[near.gene]
 	}
 	
 	if ("gene_id" %in% colnames(mcols(TSS))) {
