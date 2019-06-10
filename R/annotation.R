@@ -548,12 +548,12 @@ closest.gene.start.by.interval<-function(
 	
 	message("choice")	
 	if ("ensembl" %in% colnames(mcols(TSS))) {
-	  message("adding ensemle")
-	  noodles.decoration$ensembl[is.a.near.gene]<-TSS$ensembl[near.TSS]
+	  message("adding ensemble")
+	  noodles.decoration$ensembl[is.a.near.TSS]<-TSS$ensembl[near.TSS]
 	}
 	
 	if ("gene_id" %in% colnames(mcols(TSS))) {
-		noodles.decoration$gene_id[is.a.near.gene]<-TSS$gene_id[near.TSS]
+		noodles.decoration$gene_id[is.a.near.TSS]<-TSS$gene_id[near.TSS]
 	}
 	
 	noodles.decoration[!is.a.near.TSS,]=NA
