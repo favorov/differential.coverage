@@ -341,12 +341,12 @@ genes.with.TSS.covered.by.interval<-function(
 	
 	if ("ensembl" %in% colnames(mcols(TSS))) {
 	  overlapped.TSS.ensembl<-tapply(TSS$ensembl[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	  decorated.noodles$overlapped.TSS.ensembl<-overlapped.TSS[as.character(1:length(decorated.noodles))]
+	  decorated.noodles$overlapped.TSS.ensembl<-overlapped.TSS.ensembl[as.character(1:length(decorated.noodles))]
 	}
 	
 	if ("gene_id" %in% colnames(mcols(TSS))) {
 	  overlapped.TSS.gene_id<-tapply(TSS$gene_id[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	  decorated.noodles$overlapped.TSS.gene_id<-overlapped.TSS[as.character(1:length(decorated.noodles))]
+	  decorated.noodles$overlapped.TSS.gene_id<-overlapped.TSS.gene_id[as.character(1:length(decorated.noodles))]
 	}
 	
 	message('mapped')
@@ -400,12 +400,12 @@ genes.intersected.by.interval<-function(
 
 	if ("ensembl" %in% colnames(mcols(genelist))) {
 	  overlapped.genelist.ensembl<-tapply(genelist$ensembl[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	  decorated.noodles$overlapped.genelist.ensembl<-overlapped.genelist[as.character(1:length(decorated.noodles))]
+	  decorated.noodles$overlapped.genelist.ensembl<-overlapped.genelist.ensembl[as.character(1:length(decorated.noodles))]
 	}
 	
 	if ("gene_id" %in% colnames(mcols(genelist))) {
 	  overlapped.genelist.gene_id<-tapply(genelist$gene_id[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	  decorated.noodles$overlapped.genelist.gene_id<-overlapped.genelist[as.character(1:length(decorated.noodles))]
+	  decorated.noodles$overlapped.genelist.gene_id<-overlapped.genelist.gene_id[as.character(1:length(decorated.noodles))]
 	}
 	message('mapped')
 
