@@ -144,13 +144,11 @@ genes.with.TSS.covered<-function(
 	#inflate noodles
 	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 
-
 	#initialise the list to subset later
 	#the list is a Granges
 	TSS<-genelist
 
 	tss.start<-ifelse(strand(TSS)=='+',start(TSS),end(TSS))
-
 	start(TSS)<-tss.start
 	end(TSS)<-tss.start
 	#TSS prepared
