@@ -41,8 +41,9 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 		keytype='ENTREZID'
 		)
 	)
+
 	rownames(geneSymbols.by.ENTREZId)=geneSymbols.by.ENTREZId[,1]
-	
+
 	genelist<-NA # to make it function-scope 
 
 	if (! single.strand.genes.only) {
@@ -143,16 +144,15 @@ genes.with.TSS.covered<-function(
 	#inflate noodles
 	inflated.noodles<-inflate.noodles(noodles,flanks,seqlengths(genelist))
 
-
 	#initialise the list to subset later
 	#the list is a Granges
 	TSS<-genelist
 
 	tss.start<-ifelse(strand(TSS)=='+',start(TSS),end(TSS))
-
 	start(TSS)<-tss.start
 	end(TSS)<-tss.start
 	#TSS prepared
+	message("tss prepared")
 
 	#make overlap
 	overlaps<-findOverlaps(inflated.noodles,TSS)
@@ -326,17 +326,27 @@ genes.with.TSS.covered.by.interval<-function(
 	#overlapped.TSS
 
 	overlapped.TSS<-tapply(TSS$gene_name[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	decorated.noodles$overlapped.TSS=overlapped.TSS[as.character(1:length(decorated.noodles))]
+	decorated.noodles$overlapped.TSS<-overlapped.TSS[as.character(1:length(decorated.noodles))]
 	#we need this addressing scheme ([as.character(1:length(decorated.noodles))]) because names(overlapped.TSS)
 	#are the indices of noodles that have overlapped TSS. Those that have not are not represented in overlapped.TSS
 	#and after our indexing they are NA, and it is exacltly what we want them to be
 
 	overlapped.pos<-tapply(as.character(start(TSS))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	decorated.noodles$overlapped.pos=overlapped.pos[as.character(1:length(decorated.noodles))]
+	decorated.noodles$overlapped.pos<-overlapped.pos[as.character(1:length(decorated.noodles))]
 
 	ovrl.dir<-tapply(as.character(strand(TSS))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	decorated.noodles$ovrl.dir=ovrl.dir[as.character(1:length(decorated.noodles))]
-
+	decorated.noodles$ovrl.dir<-ovrl.dir[as.character(1:length(decorated.noodles))]
+	
+	if ("ensembl" %in% colnames(mcols(TSS))) {
+	  overlapped.TSS.ensembl<-tapply(TSS$ensembl[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.TSS.ensembl<-overlapped.TSS.ensembl[as.character(1:length(decorated.noodles))]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(TSS))) {
+	  overlapped.TSS.gene_id<-tapply(TSS$gene_id[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.TSS.gene_id<-overlapped.TSS.gene_id[as.character(1:length(decorated.noodles))]
+	}
+	
 	message('mapped')
 
 	decorated.noodles
@@ -381,11 +391,20 @@ genes.intersected.by.interval<-function(
 	#and after our indexing they are NA, and it is exacltly what we want them to be
 
 	overlapped.pos<-tapply(as.character(start(genelist))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	decorated.noodles$overlapped.pos=overlapped.pos[as.character(1:length(decorated.noodles))]
+	decorated.noodles$overlapped.pos<-overlapped.pos[as.character(1:length(decorated.noodles))]
 
 	ovrl.dir<-tapply(as.character(strand(genelist))[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
-	decorated.noodles$ovrl.dir=ovrl.dir[as.character(1:length(decorated.noodles))]
+	decorated.noodles$ovrl.dir<-ovrl.dir[as.character(1:length(decorated.noodles))]
 
+	if ("ensembl" %in% colnames(mcols(genelist))) {
+	  overlapped.genelist.ensembl<-tapply(genelist$ensembl[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.genelist.ensembl<-overlapped.genelist.ensembl[as.character(1:length(decorated.noodles))]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(genelist))) {
+	  overlapped.genelist.gene_id<-tapply(genelist$gene_id[subjectHits(overlapa)],queryHits(overlapa),paste,collapse=', ')
+	  decorated.noodles$overlapped.genelist.gene_id<-overlapped.genelist.gene_id[as.character(1:length(decorated.noodles))]
+	}
 	message('mapped')
 
 	decorated.noodles
@@ -441,6 +460,17 @@ closest.gene.by.interval<-function(
 	noodles.decoration$strand[is.a.near.gene]<-
 		as.character(strand(genelist)[near.gene])
 	noodles.decoration$dist[is.a.near.gene]<-dist.gene
+
+
+	if ("ensembl" %in% colnames(mcols(genelist))) {
+	  noodles.decoration$ensembl<-character(length(noodles))
+		noodles.decoration$ensembl[is.a.near.gene]<-genelist$ensembl[near.gene]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(genelist))) {
+	  noodles.decoration$gene_id<-character(length(noodles))
+		noodles.decoration$gene_id[is.a.near.gene]<-genelist$gene_id[near.gene]
+	}
 	
 	noodles.decoration[!is.a.near.gene,]=NA
 
@@ -514,6 +544,18 @@ closest.gene.start.by.interval<-function(
 	noodles.decoration$pos[is.a.near.TSS]<-start(TSS)[near.TSS]
 	noodles.decoration$dir[is.a.near.TSS]<-as.character(strand(TSS)[near.TSS])
 	noodles.decoration$dist[is.a.near.TSS]<-dist.TSS
+
+	qqTSS<<-TSS
+	
+	if ("ensembl" %in% colnames(mcols(TSS))) {
+	  noodles.decoration$ensembl<-character(length(noodles))
+		noodles.decoration$ensembl[is.a.near.TSS]<-TSS$ensembl[near.TSS]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(TSS))) {
+	  noodles.decoration$gene_id<-character(length(noodles))
+		noodles.decoration$gene_id[is.a.near.TSS]<-TSS$gene_id[near.TSS]
+	}
 	
 	noodles.decoration[!is.a.near.TSS,]=NA
 
