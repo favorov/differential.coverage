@@ -3,6 +3,9 @@ library(rtracklayer)
 library(dplyr)
 library(usethis)
 
+#gencode rel 26, hg38
+#https://www.gencodegenes.org/human/release_26.html
+
 if(! 'raw_differtial_coverage_gencode_hs26_gff' %in% ls()){
   raw_differtial_coverage_gencode_hs26_gff=
       readGFF("http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_26/gencode.v26.annotation.gff3.gz",

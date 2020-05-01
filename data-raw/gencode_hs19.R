@@ -3,6 +3,9 @@ library(rtracklayer)
 library(dplyr)
 library(usethis)
 
+#this is for gencode hs 19 that is the current for hg19
+#https://www.gencodegenes.org/human/release_19.html
+
 if(! 'raw_differtial_coverage_gencode_hs19_gff' %in% ls()){
   raw_differtial_coverage_gencode_hs19_gff=
       readGFF("http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gff3.gz",
