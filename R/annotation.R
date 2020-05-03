@@ -30,6 +30,10 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode19',single.strand.gen
 		return(gencode_hs26_genes) # it was lazy
 	if (genome.annotation.id=='gencode29' || genome.annotation.id=='gencode.29' || genome.annotation.id=='gencode.hg.29')
 		return(gencode_hs29_genes) # it was lazy
+	if (genome.annotation.id=='gencode32' || genome.annotation.id=='gencode.32' || genome.annotation.id=='gencode.hg.32')
+		return(gencode_hs32_genes) # it was lazy
+	if (genome.annotation.id=='gencode34' || genome.annotation.id=='gencode.34' || genome.annotation.id=='gencode.hg.34')
+		return(gencode_hs34_genes) # it was lazy
 	
 	#prepare genes names; we refer the TxDb object by name
 
