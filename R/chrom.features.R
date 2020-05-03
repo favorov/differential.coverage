@@ -13,7 +13,8 @@
 #' @seealso seqinfo
 nucl.chromosomes.hg19<-function(chrM=FALSE)
 {
-	chr.all<-seqinfo(TxDb.Hsapiens.UCSC.hg19.knownGene)
+	#chr.all<-seqinfo(TxDb.Hsapiens.UCSC.hg19.knownGene)
+	chr.all<-seqinfo(gencode_hs19_genes)
 	if (chrM)
 		chr.all[names(chr.all)[1:25]]
 	else
@@ -49,7 +50,7 @@ nucl.chromosomes.hg18<-function(chrM=FALSE)
 #' @seealso seqinfo
 nucl.chromosomes.hg38<-function(chrM=FALSE)
 {
-	chr.all<-seqinfo(TxDb.Hsapiens.UCSC.hg38.knownGene)
+	chr.all<-seqinfo(gencode_hs29_genes)
 	if (chrM)
 		chr.all[names(chr.all)[1:25]]
 	else
@@ -67,6 +68,7 @@ nucl.chromosomes.hg38<-function(chrM=FALSE)
 #' @seealso SNPchip, getCytoband 
 get.cytoband.ranges<-function()
 {
+	if (!require(SNPChip)) {stop("SNPchip package is not installed")}
 	cbands<-getCytoband()
 	karyotype<-GRanges(
 		seqinfo=nucl.chromosomes.hg19(),
