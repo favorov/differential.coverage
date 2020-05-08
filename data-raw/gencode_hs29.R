@@ -4,7 +4,7 @@ library(dplyr)
 library(usethis)
 
 #gencode rel 29, hg38
-#https://www.gencodegenes.org/human/release_26.html
+#https://www.gencodegenes.org/human/release_29.html
 
 if(! 'raw_differtial_coverage_gencode_hs29_gff' %in% ls()){
   raw_differtial_coverage_gencode_hs29_gff=
