@@ -13,6 +13,8 @@ suppressMessages(
 	)
 )
 
+rownames(geneSymbols.by.ENTREZId)<-geneSymbols.by.ENTREZId$ENTREZID
+
 #could be: 
 #		genelist<-unlist(genes(
 #				get(.USCS.knownGenes.by.genome.annotation.id(genome.annotation.id)),
