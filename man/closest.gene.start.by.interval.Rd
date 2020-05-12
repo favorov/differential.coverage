@@ -4,8 +4,7 @@
 \alias{closest.gene.start.by.interval}
 \title{closest.gene.start.by.interval}
 \usage{
-closest.gene.start.by.interval(noodles, genes = NA,
-  genome.id = "gencode19")
+closest.gene.start.by.interval(noodles, genes = NA, genome.id = "gencode19")
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}

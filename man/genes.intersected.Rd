@@ -4,8 +4,7 @@
 \alias{genes.intersected}
 \title{genes.intersected}
 \usage{
-genes.intersected(noodles, flanks = 0, genes = NA,
-  genome.id = "gencode19")
+genes.intersected(noodles, flanks = 0, genes = NA, genome.id = "gencode19")
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}

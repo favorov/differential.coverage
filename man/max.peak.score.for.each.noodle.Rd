@@ -4,8 +4,7 @@
 \alias{max.peak.score.for.each.noodle}
 \title{max.peak.score.for.each.noodle}
 \usage{
-\method{max}{peak.score.for.each.noodle}(noodles, bedfilnames,
-  bed.ids = bedfilnames)
+\method{max}{peak.score.for.each.noodle}(noodles, bedfilnames, bed.ids = bedfilnames)
 }
 \arguments{
 \item{noodles}{\code{GRanges} with the intervals}

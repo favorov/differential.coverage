@@ -4,8 +4,12 @@
 \alias{genes.with.TSS.covered}
 \title{genes.with.TSS.covered}
 \usage{
-genes.with.TSS.covered(noodles, flanks = 0, genes = NA,
-  genome.id = "gencode19")
+genes.with.TSS.covered(
+  noodles,
+  flanks = 0,
+  genes = NA,
+  genome.id = "gencode19"
+)
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}

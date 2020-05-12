@@ -4,8 +4,7 @@
 \alias{get.Known.Gene.List}
 \title{get.Known.Gene.List}
 \usage{
-get.Known.Gene.List(genome.annotation.id = "gencode19",
-  single.strand.genes.only = FALSE)
+get.Known.Gene.List(genome.annotation.id = "gencode34")
 }
 \arguments{
 \item{genome.annotation.id}{says what annotation is used to prepare the output. \code{gencode19} (default), \code{gencode29} and \code{gencode26} load genes for gencode stable annotations (19 and 29) and for 26 (gencode 19 is for human genome 19, gencode 26 and 29 are for 38 version). \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly.}
@@ -16,5 +15,7 @@ get.Known.Gene.List(genome.annotation.id = "gencode19",
 \code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode provides its own gene names
 }
 \description{
-prepare gene list for the annotation functions based on one of standard annotations (see, this thing, we need to unify the TxDb.Hsapiens.UCSC.hg**.knownGene stuff with the gencode data
+refer to a known gene list for the annotation functions
+corrently, we have: gencode hs 19 (current for hg 18), gencode hs 26, gencode hs 29, gencode hs 32 (current for hg38), gencode hs 34; 
+ucsc hg 18; uscs hg 19; ucsc hg 38 (all in single-strand option)
 }
