@@ -1,5 +1,5 @@
 #differential.coverage library
-#A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014-2019
+#A. Favorov, E. Fertig, D.Gaykalova, J. Califano, S. Wheelan 2014-2020
 #annotation utilities
 
 #' @import rtracklayer
@@ -43,7 +43,7 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode34')
 		n24={if (human || ucsc) NULL else gencode_mm24_genes},
 		n25={if (human || ucsc) NULL else gencode_mm25_genes},
 		n18={if (mouse || gencode) NULL else ucsc_hg18_genes},
-		n19={if (mouse || ! (gencode || ucsc)) NULL	else if (ucsc) ucsc_hg19_genes else gencode_hs19_genes},
+		n19={if (mouse || ! (gencode || ucsc)) stop (str_c("We are not sure whether you nean hg19 ucsc annotation or hs19 gencode : \"",genome_id,"\"."))	else if (ucsc) ucsc_hg19_genes else gencode_hs19_genes},
 		n38={if (mouse || gencode) NULL else ucsc_hg38_genes},
 		n26={if (mouse || ucsc) NULL else gencode_hs26_genes},
 		n29={if (mouse || ucsc) NULL else gencode_hs29_genes},
@@ -107,6 +107,9 @@ inflate.noodles<-function
 #' The default is NA that means that the function will call \code{\link{get.Known.Gene.List}} 
 #' @param genome.id is genome.annotation.id to call \code{\link{get.Known.Gene.List}} 
 #' @return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
+#' @author Alexander Favorov, \email{favorov@@sensi.org}
+#' @seealso \code{\link{differential.coverage-package}}
+#' @keywords annotation
 genes.with.TSS.covered<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
 	flanks=0, #how far to shrink
@@ -194,6 +197,8 @@ genes.with.TSS.covered<-function(
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
+#' @inherit genes.with.TSS.covered author seealso 
+#' @keywords annotation
 genes.intersected<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
 	flanks=0, #how far to shrink
@@ -271,6 +276,8 @@ genes.intersected<-function(
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added TSS-overlapped genes for each interval  
+#' @inherit genes.with.TSS.covered author seealso 
+#' @keywords annotation
 genes.with.TSS.covered.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	flanks=0, #how far to shrink 
@@ -339,6 +346,8 @@ genes.with.TSS.covered.by.interval<-function(
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added gene-overlapped genes for each interval  
+#' @inherit genes.with.TSS.covered author seealso 
+#' @keywords annotation
 genes.intersected.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	flanks=0, #how far to shrink 
@@ -396,6 +405,8 @@ genes.intersected.by.interval<-function(
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added closest gene info for each interval  
+#' @inherit genes.with.TSS.covered author seealso 
+#' @keywords annotation
 closest.gene.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	genes=NA,
@@ -468,6 +479,8 @@ closest.gene.by.interval<-function(
 #' @export
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added closest gene info for each interval  
+#' @inherit genes.with.TSS.covered author seealso 
+#' @keywords annotation
 closest.gene.start.by.interval<-function(
 	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
 	genes=NA,
@@ -535,6 +548,82 @@ closest.gene.start.by.interval<-function(
 	}
 	
 	noodles.decoration[!is.a.near.TSS,]=NA
+
+	decorated.noodles<-noodles
+
+	mcols(decorated.noodles)<-noodles.decoration
+
+	message('mapped')
+	
+	decorated.noodles
+}
+
+
+#' preceded.gene.by.interval
+#' 
+#' For each interval, find the closest gene that the interval precede.  
+#' An overlapped gene is neglected.
+#' Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. 
+#' 
+#' @export
+#' @inheritParams genes.with.TSS.covered
+#' @return \code{GRanges} object, noodles argument with added closest preceded (non overlapped) gene info for each interval  
+#' @inherit genes.with.TSS.covered author seealso 
+#' @keywords annotation
+preceded.gene.by.interval<-function(
+	noodles, # GRanges with the noodles, if it has p.value ans ishyper values, thay will be mapped to genes
+	genes=NA,
+	genome.id='gencode19'
+)
+{
+	#prepare genelist
+	if(!is.na(genes) && class(genes)=='GRanges') {genelist<-genes} 
+	else{genelist<-get.Known.Gene.List(genome.id)}
+		
+	message('closest preceded')
+
+	near.gene<-precede(noodles,genelist)
+
+	#some nearest contatain NA
+	#we just remove them from result
+	#mapping to no-NA indices
+	is.a.near.gene <- !is.na(near.gene)
+
+	noodles.nna<-noodles[is.a.near.gene]
+	#decorated.noodles.nna now are all the noodles with non-NA nearest
+
+	near.gene<-near.gene[is.a.near.gene]
+	#near.gene now are all the non-NA values
+
+	dist.gene<-distance(noodles.nna,genelist[near.gene])
+
+	noodles.decoration<-DataFrame(
+		closest.gene=character(length(noodles)),
+		start=integer(length(noodles)),
+		end=integer(length(noodles)),
+		strand=character(length(noodles)),
+		dist=integer(length(noodles))
+	)
+
+	noodles.decoration$closest.gene[is.a.near.gene]<-genelist$gene_name[near.gene]
+	noodles.decoration$start[is.a.near.gene]<-start(genelist)[near.gene]
+	noodles.decoration$end[is.a.near.gene]<-end(genelist)[near.gene]
+	noodles.decoration$strand[is.a.near.gene]<-
+		as.character(strand(genelist)[near.gene])
+	noodles.decoration$dist[is.a.near.gene]<-dist.gene
+
+
+	if ("ensembl" %in% colnames(mcols(genelist))) {
+	  noodles.decoration$ensembl<-character(length(noodles))
+		noodles.decoration$ensembl[is.a.near.gene]<-genelist$ensembl[near.gene]
+	}
+	
+	if ("gene_id" %in% colnames(mcols(genelist))) {
+	  noodles.decoration$gene_id<-character(length(noodles))
+		noodles.decoration$gene_id[is.a.near.gene]<-genelist$gene_id[near.gene]
+	}
+	
+	noodles.decoration[!is.a.near.gene,]=NA
 
 	decorated.noodles<-noodles
 

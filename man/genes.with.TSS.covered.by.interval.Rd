@@ -30,3 +30,10 @@ Generates a list of genes (possibly, empty) that start inside each interval
 \details{
 After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated)  intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If a noodle (interval) overlaps more that one TSS, we form a text list of the genes.
 }
+\seealso{
+\code{\link{differential.coverage-package}}
+}
+\author{
+Alexander Favorov, \email{favorov@sensi.org}
+}
+\keyword{annotation}
