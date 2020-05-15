@@ -23,7 +23,7 @@ An overlapped gene is neglected.
 Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}.
 }
 \seealso{
-\code{\link{differential.coverage-package}}
+\code{\link{differential.coverage}}
 }
 \author{
 Alexander Favorov, \email{favorov@sensi.org}

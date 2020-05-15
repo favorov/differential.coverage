@@ -31,7 +31,7 @@ Generates a list of genes (possibly, empty) that intersects with each interval
 After the noodles (the set of intervals to search intersections with) are inflated by flanks, we look for all the genes that overlap with the (inflated) intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If a noodle (interval) overlaps more that one gene, we form a text list of the genes.
 }
 \seealso{
-\code{\link{differential.coverage-package}}
+\code{\link{differential.coverage}}
 }
 \author{
 Alexander Favorov, \email{favorov@sensi.org}
