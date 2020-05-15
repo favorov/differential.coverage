@@ -1,8 +1,8 @@
 Package: differential.coverage
 Type: Package
 Title: Differential Coverage package
-Version: 0.1.9
-Date: 2019-06-10
+Version: 0.2.0
+Date: 2020-05-08
 Author@R: c(person("Alexander","Favorov",email = "favorov@sensi.org"),person("Elana","J.","Fertig", email="ejfertig@jhmi.edu"),person("Daria","A.",","Gaykalova", email="dgaykal1@jhmi.edu"),person("Joseph","A.","Califano", email="jcalifa@jhmi.edu "),person("Sarah","J.","Wheelan",email = "swheelan@jhmi.edu"))
 Author: Alexander Favorov, Elana J. Fertig, Daria A. Gaykalova, Joseph A.  Califano, Sarah J. Wheelan
 Maintainer: Alexander Favorov <favorov@sensi.org>
@@ -11,20 +11,16 @@ License: Artistic-2.0
 LazyLoad: yes
 LazyData: yes
 Depends:
-    R (>= 3.1.0),
-    IRanges,
-    GenomicRanges,
-    Homo.sapiens,
-    TxDb.Hsapiens.UCSC.hg18.knownGene,
-    TxDb.Hsapiens.UCSC.hg19.knownGene,
-    TxDb.Hsapiens.UCSC.hg38.knownGene,
-    org.Hs.eg.db,
-    rtracklayer,
-    SNPchip,
-    Matrix
+	R (>= 3.1.0)
+Imports:
+	IRanges,
+	GenomicRanges,
+	GenomeInfoDb,
+	rtracklayer,
+	Matrix
 biocViews: Annotation, Genetics, Infrastructure, DataRepresentation,
     Bioinformatics
 URL: https://github.com/favorov/differential.coverage
 Packaged: 2019-02-02 07:07:07 EST; favorov; Winter is Coming Again
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

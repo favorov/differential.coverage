@@ -4,8 +4,7 @@
 \alias{closest.gene.start.by.interval}
 \title{closest.gene.start.by.interval}
 \usage{
-closest.gene.start.by.interval(noodles, genes = NA,
-  genome.id = "gencode19")
+closest.gene.start.by.interval(noodles, genes = NA, genome.id = "gencode19")
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
@@ -21,3 +20,10 @@ The default is NA that means that the function will call \code{\link{get.Known.G
 \description{
 Find the closest gene start for each of the given set of intervals.  Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}.
 }
+\seealso{
+\code{\link{differential.coverage-package}}
+}
+\author{
+Alexander Favorov, \email{favorov@sensi.org}
+}
+\keyword{annotation}

@@ -4,8 +4,12 @@
 \alias{genes.with.TSS.covered}
 \title{genes.with.TSS.covered}
 \usage{
-genes.with.TSS.covered(noodles, flanks = 0, genes = NA,
-  genome.id = "gencode19")
+genes.with.TSS.covered(
+  noodles,
+  flanks = 0,
+  genes = NA,
+  genome.id = "gencode19"
+)
 }
 \arguments{
 \item{noodles}{the \code{GRanges} list of intervals to look TSS in}
@@ -26,3 +30,10 @@ Generates list of genes that start inside a given set of intervals
 \details{
 After the noodles (the set of intervals to search TSS in) are inflated by flanks, we look for all the TSS that start inside the (inflated) intervals. Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. If the noodles has p.value and/or fdr metadata, we ascribe the data of the interval to the retrieved gene. If there a gene refers to a set of noodles, it has min ascribed. The ishyper data is also transferred to gene, if it is not contradictory.
 }
+\seealso{
+\code{\link{differential.coverage-package}}
+}
+\author{
+Alexander Favorov, \email{favorov@sensi.org}
+}
+\keyword{annotation}
