@@ -477,6 +477,7 @@ closest.gene.by.interval<-function(
 #' Find the closest gene start for each of the given set of intervals.  Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. 
 #' 
 #' @export
+#'
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added closest gene info for each interval  
 #' @inherit genes.with.TSS.covered author seealso 
@@ -566,6 +567,7 @@ closest.gene.start.by.interval<-function(
 #' Genes are provided by parameter or they are returned by \code{\link{get.Known.Gene.List}} for \code{genome_id}. 
 #' 
 #' @export
+#'
 #' @inheritParams genes.with.TSS.covered
 #' @return \code{GRanges} object, noodles argument with added closest preceded (non overlapped) gene info for each interval  
 #' @inherit genes.with.TSS.covered author seealso 
