@@ -108,7 +108,7 @@ inflate.noodles<-function
 #' @param genome.id is genome.annotation.id to call \code{\link{get.Known.Gene.List}} 
 #' @return \code{GRanges} object that is the list of the genes we look for - the object is not co-indexed with \code{noodles} parameter
 #' @author Alexander Favorov, \email{favorov@@sensi.org}
-#' @seealso \code{\link{differential.coverage-package}}
+#' @seealso \code{\link{differential.coverage}}
 #' @keywords annotation
 genes.with.TSS.covered<-function(
 	noodles, # GRanges with the noodles, if it has p.value, fdr and ishyper values, they will be mapped to genes
