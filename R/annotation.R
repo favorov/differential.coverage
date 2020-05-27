@@ -10,7 +10,7 @@
 #' get.Known.Gene.List
 #' 
 #' refer to a known gene list for the annotation functions
-#' corrently, we have: gencode hs 19 (current for hg 18), gencode hs 26, gencode hs 29, gencode hs 32 (current for hg38), gencode hs 34; 
+#' corrently, we have: gencode hs 19 (current for hg 19), gencode hs 26, gencode hs 29, gencode hs 32 (current for hg38), gencode hs 34; 
 #' ucsc hg 18; uscs hg 19; ucsc hg 38 (all in single-strand option)
 #' 
 #' @export
