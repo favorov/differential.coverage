@@ -1,8 +1,8 @@
 Package: differential.coverage
 Type: Package
 Title: Differential Coverage package
-Version: 0.2.0
-Date: 2020-05-08
+Version: 0.2.1
+Date: 2021-02-19
 Author@R: c(person("Alexander","Favorov",email = "favorov@sensi.org"),person("Elana","J.","Fertig", email="ejfertig@jhmi.edu"),person("Daria","A.",","Gaykalova", email="dgaykal1@jhmi.edu"),person("Joseph","A.","Califano", email="jcalifa@jhmi.edu "),person("Sarah","J.","Wheelan",email = "swheelan@jhmi.edu"))
 Author: Alexander Favorov, Elana J. Fertig, Daria A. Gaykalova, Joseph A.  Califano, Sarah J. Wheelan
 Maintainer: Alexander Favorov <favorov@sensi.org>
@@ -23,4 +23,4 @@ biocViews: Annotation, Genetics, Infrastructure, DataRepresentation,
 URL: https://github.com/favorov/differential.coverage
 Packaged: 2019-02-02 07:07:07 EST; favorov; Winter is Coming Again
 Encoding: UTF-8
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

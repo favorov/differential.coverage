@@ -10,12 +10,12 @@
 #' get.Known.Gene.List
 #' 
 #' refer to a known gene list for the annotation functions
-#' corrently, we have: gencode hs 19 (current for hg 19), gencode hs 26, gencode hs 29, gencode hs 32 (current for hg38), gencode hs 34; 
+#' corrently, we have: gencode hs 19 (current for hg 19), gencode hs 26, gencode hs 28, gencode hs 29, gencode hs 32 (current for hg38), gencode hs 34; 
 #' ucsc hg 18; uscs hg 19; ucsc hg 38 (all in single-strand option)
 #' 
 #' @export
 #' 
-#' @param genome.annotation.id says what annotation is used to prepare the output. \code{gencode19} (default), \code{gencode29} and \code{gencode26} load genes for gencode stable annotations (19 and 29) and for 26 (gencode 19 is for human genome 19, gencode 26 and 29 are for 38 version). \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly. 
+#' @param genome.annotation.id says what annotation is used to prepare the output. \code{gencode19} (default), \code{gencode29}, \code{gencode29} and \code{gencode26} load genes for gencode stable annotations (19 and 29) and for 26 (gencode 19 is for human genome 19, gencode 26, 28 and 29 are for 38 version). \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly. 
 ##' @param single.strand.genes.only UCSC annotations contain ~500 pair of same-named genes that exist on both strands.The parameter says whether to exclude them from the gene list to be returned. The default is \code{FALSE} that allows these genes to be included.
 #' @return \code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode provides its own gene names 
 get.Known.Gene.List<-function(genome.annotation.id='gencode34')
@@ -46,6 +46,7 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode34')
 		n19={if (mouse || ! (gencode || ucsc)) stop (str_c("We are not sure whether you nean hg19 ucsc annotation or hs19 gencode : \"",genome_id,"\"."))	else if (ucsc) ucsc_hg19_genes else gencode_hs19_genes},
 		n38={if (mouse || gencode) NULL else ucsc_hg38_genes},
 		n26={if (mouse || ucsc) NULL else gencode_hs26_genes},
+		n28={if (mouse || ucsc) NULL else gencode_hs28_genes},
 		n29={if (mouse || ucsc) NULL else gencode_hs29_genes},
 		n32={if (mouse || ucsc) NULL else gencode_hs32_genes},
 		n34={if (mouse || ucsc) NULL else gencode_hs34_genes}

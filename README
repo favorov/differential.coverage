@@ -24,3 +24,4 @@ We start it as a package just to easy install to R.
 0.1.8 - works with gencode and ucsc genome annotations
 0.1.9 - adds ensemble or gene_id to the output gene list
 0.2.0 - added mouse genome; moved all the known gene tables to /data
+0.2.1 - added gencode hs28 
