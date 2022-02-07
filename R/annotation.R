@@ -69,19 +69,19 @@ inflate.noodles<-function
 (
 	noodles, # GRanges with the noodles
 	flanks=0, # how far to inflate 
-	seqlengths=NA #chromosome length, to be subsettable by chomosome name as charater if not NA
+	seqlengths=NA #chromosome length, ideally it is provided by seqlengths(noodles) If not NA (ideal case), it is an integer array is to be indexed by chromosome name as character if not NA
 )
 {
 	inflated.noodles<-noodles
 
 	if (sum(is.na(seqlengths))) 
-	#we did not provide the lengths explicitely
-	#sum is to supress warnong is seqlengths is provided as vector
+	#we did not provide the lengths explicitly
+	#sum is to suppress warning is seqlengths is provided as vector
 	#for scalar NA sum is the same as its agrument
 	{
 		seqlengths<-seqlengths(noodles)
 	}
-	if (flanks>0) #valudate seqlengths
+	if (flanks>0) #validate seqlengths
 	{
 		if(sum(is.na(seqlengths[as.character(seqnames(noodles))]))>0)
 			stop('Inflating noodles, seqlengths cannot be undefined here')
