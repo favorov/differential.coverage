@@ -73,14 +73,19 @@ inflate.noodles<-function
 )
 {
 	inflated.noodles<-noodles
-
-	if (sum(is.na(seqlengths))) 
-	#we did not provide the lengths explicitly
-	#sum is to suppress warning is seqlengths is provided as vector
-	#for scalar NA sum is the same as its agrument
-	{
+	seqlengthes<-seqlengths(noodles)
+	if (sum(is.na(seqlengths))) {
+		#we did not provide the lengths explicitly
+		#sum is to suppress warning is seqlengths is provided as vector
+		#for scalar NA sum is the same as its agrument
 		seqlengths<-seqlengths(noodles)
+	}	else {
+		if(sum(is.na(seqlengthes[as.character(seqnames(noodles))]))>0)
+		
 	}
+
+
+
 	if (flanks>0) #validate seqlengths
 	{
 		if(sum(is.na(seqlengths[as.character(seqnames(noodles))]))>0)
