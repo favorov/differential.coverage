@@ -72,28 +72,39 @@ inflate.noodles<-function
 	seqlengths=NA #chromosome length, ideally it is provided by seqlengths(noodles) If not NA (ideal case), it is an integer array is to be indexed by chromosome name as character if not NA
 )
 {
+  seqlengthes<-NA
+  we_need_to_know_length_of<-as.character(unique(seqnames(noodles)))
+  length_in_noodles_ok=(0 == sum(is.na(seqlengths(noodles)[we_need_to_know_length_of])))
+  length_in_parameter_ok=(0 == sum(is.na(seqlengths[we_need_to_know_length_of])))
+  
+  if (length_in_noodles_ok && !length_in_parameter_ok) { 
+    #all lengths we need are defined in noodles
+    seqlengthes<-seqlengths(noodles)
+  }
+  
+  if (!length_in_noodles_ok && length_in_parameter_ok) { 
+    #all lengths we need are defined in parameter
+    seqlengthes<-seqlengths
+  }
+  
+  if (!length_in_noodles_ok && !length_in_parameter_ok) { 
+    #not all the lengths we need are defined
+    stop('I cannot inflate the noodles without the chromosome lengths information!')
+    
+  }
+  
+  if (length_in_noodles_ok && length_in_parameter_ok &&
+        !all.equal(
+          seqlengths(noodles)[we_need_to_know_length_of],
+          seqlengths[we_need_to_know_length_of])  ) { 
+    #all the lengths we need are defined, but they contradict
+    warning("The lengths information for noodles to be inflated and the seqlengths parameter contradict.\nI will go on with the noodles, but possibly there is a genome version mismatch.")
+  }
+  
 	inflated.noodles<-noodles
-	seqlengthes<-seqlengths(noodles)
-	if (sum(is.na(seqlengths))) {
-		#we did not provide the lengths explicitly
-		#sum is to suppress warning is seqlengths is provided as vector
-		#for scalar NA sum is the same as its agrument
-		seqlengths<-seqlengths(noodles)
-	}	else {
-		if(sum(is.na(seqlengthes[as.character(seqnames(noodles))]))>0)
-		
-	}
-
-
-
-	if (flanks>0) #validate seqlengths
-	{
-		if(sum(is.na(seqlengths[as.character(seqnames(noodles))]))>0)
-			stop('Inflating noodles, seqlengths cannot be undefined here')
-	}	
 	#inflate noodles
 	start(inflated.noodles)<-pmax(1,start(noodles)-flanks)
-	end(inflated.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths[as.character(seqnames(noodles))]))
+	end(inflated.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengthes[as.character(seqnames(noodles))]))
 	inflated.noodles
 }
 
