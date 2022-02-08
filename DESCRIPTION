@@ -23,4 +23,4 @@ biocViews: Annotation, Genetics, Infrastructure, DataRepresentation,
 URL: https://github.com/favorov/differential.coverage
 Packaged: 2022-02-08 07:07:07 EST; favorov; Winter is Coming Again
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
