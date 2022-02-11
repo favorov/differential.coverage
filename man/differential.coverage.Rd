@@ -34,7 +34,7 @@ and the samples belong to (two) conditions and for each probe we want to test nu
 
 
 After we run the tests and filter the probes to have the differentialy covered oned, or for any other interval annotation, we can run the annotation functions to idetify the genes around.
-The package knows the gene annotatinos of the following genomes: ucsc mm9 and mm10, gencode mm23, mm24 and mm25, ucsc hg 18, hg19, hg38, and gencode hs19, hs26, hs29, hs32 and hs34.
+The package knows the gene annotatinos of the following genomes: ucsc mm9 and mm10, gencode mm23, mm24 and mm25, ucsc hg 18, hg19, hg38, and gencode hs19, hs26, hs28, hs29, hs32 and hs34.
 The functions are:\cr
 \link{closest.gene.by.interval}\cr
 \link{closest.gene.start.by.interval}\cr

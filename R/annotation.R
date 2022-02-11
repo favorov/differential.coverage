@@ -10,12 +10,12 @@
 #' get.Known.Gene.List
 #' 
 #' refer to a known gene list for the annotation functions
-#' corrently, we have: gencode hs 19 (current for hg 18), gencode hs 26, gencode hs 29, gencode hs 32 (current for hg38), gencode hs 34; 
+#' corrently, we have: gencode hs 19 (current for hg 19), gencode hs 26, gencode hs 28, gencode hs 29, gencode hs 32 (current for hg38), gencode hs 34; 
 #' ucsc hg 18; uscs hg 19; ucsc hg 38 (all in single-strand option)
 #' 
 #' @export
 #' 
-#' @param genome.annotation.id says what annotation is used to prepare the output. \code{gencode19} (default), \code{gencode29} and \code{gencode26} load genes for gencode stable annotations (19 and 29) and for 26 (gencode 19 is for human genome 19, gencode 26 and 29 are for 38 version). \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly. 
+#' @param genome.annotation.id says what annotation is used to prepare the output. \code{gencode19} (default), \code{gencode29}, \code{gencode29} and \code{gencode26} load genes for gencode stable annotations (19 and 29) and for 26 (gencode 19 is for human genome 19, gencode 26, 28 and 29 are for 38 version). \code{hg18}, \code{hg19}, and \code{hg38} load \code{TxDb.Hsapiens.UCSC.hg18.knownGene}, \code{TxDb.Hsapiens.UCSC.hg19.knownGene} and \code{TxDb.Hsapiens.UCSC.hg38.knownGene}, correspondingly. 
 ##' @param single.strand.genes.only UCSC annotations contain ~500 pair of same-named genes that exist on both strands.The parameter says whether to exclude them from the gene list to be returned. The default is \code{FALSE} that allows these genes to be included.
 #' @return \code{GRanges} object that contains the gene annotation. The gene_name metadata field is the gene symbol according to the requested annotation. ucsc* uses org.Hs.eg.db names, the gencode provides its own gene names 
 get.Known.Gene.List<-function(genome.annotation.id='gencode34')
@@ -46,6 +46,7 @@ get.Known.Gene.List<-function(genome.annotation.id='gencode34')
 		n19={if (mouse || ! (gencode || ucsc)) stop (str_c("We are not sure whether you nean hg19 ucsc annotation or hs19 gencode : \"",genome_id,"\"."))	else if (ucsc) ucsc_hg19_genes else gencode_hs19_genes},
 		n38={if (mouse || gencode) NULL else ucsc_hg38_genes},
 		n26={if (mouse || ucsc) NULL else gencode_hs26_genes},
+		n28={if (mouse || ucsc) NULL else gencode_hs28_genes},
 		n29={if (mouse || ucsc) NULL else gencode_hs29_genes},
 		n32={if (mouse || ucsc) NULL else gencode_hs32_genes},
 		n34={if (mouse || ucsc) NULL else gencode_hs34_genes}
@@ -68,26 +69,42 @@ inflate.noodles<-function
 (
 	noodles, # GRanges with the noodles
 	flanks=0, # how far to inflate 
-	seqlengths=NA #chromosome length, to be subsettable by chomosome name as charater if not NA
+	seqlengths=NA #chromosome length, ideally it is provided by seqlengths(noodles) If not NA (ideal case), it is an integer array is to be indexed by chromosome name as character if not NA
 )
 {
+  seqlengthes<-NA
+  we_need_to_know_length_of<-as.character(unique(seqnames(noodles)))
+  length_in_noodles_ok=(0 == sum(is.na(seqlengths(noodles)[we_need_to_know_length_of])))
+  length_in_parameter_ok=(0 == sum(is.na(seqlengths[we_need_to_know_length_of])))
+  
+  if (length_in_noodles_ok && !length_in_parameter_ok) { 
+    #all lengths we need are defined in noodles
+    seqlengthes<-seqlengths(noodles)
+  }
+  
+  if (!length_in_noodles_ok && length_in_parameter_ok) { 
+    #all lengths we need are defined in parameter
+    seqlengthes<-seqlengths
+  }
+  
+  if (!length_in_noodles_ok && !length_in_parameter_ok) { 
+    #not all the lengths we need are defined
+    stop('I cannot inflate the noodles without the chromosome lengths information!')
+    
+  }
+  
+  if (length_in_noodles_ok && length_in_parameter_ok &&
+        !all.equal(
+          seqlengths(noodles)[we_need_to_know_length_of],
+          seqlengths[we_need_to_know_length_of])  ) { 
+    #all the lengths we need are defined, but they contradict
+    warning("The lengths information for noodles to be inflated and the seqlengths parameter contradict.\nI will go on with the noodles, but possibly there is a genome version mismatch.")
+  }
+  
 	inflated.noodles<-noodles
-
-	if (sum(is.na(seqlengths))) 
-	#we did not provide the lengths explicitely
-	#sum is to supress warnong is seqlengths is provided as vector
-	#for scalar NA sum is the same as its agrument
-	{
-		seqlengths<-seqlengths(noodles)
-	}
-	if (flanks>0) #valudate seqlengths
-	{
-		if(sum(is.na(seqlengths[as.character(seqnames(noodles))]))>0)
-			stop('Inflating noodles, seqlengths cannot be undefined here')
-	}	
 	#inflate noodles
 	start(inflated.noodles)<-pmax(1,start(noodles)-flanks)
-	end(inflated.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengths[as.character(seqnames(noodles))]))
+	end(inflated.noodles)<-pmin(end(noodles)+flanks,as.integer(seqlengthes[as.character(seqnames(noodles))]))
 	inflated.noodles
 }
 
